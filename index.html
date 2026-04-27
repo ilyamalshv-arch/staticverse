@@ -1532,10 +1532,24 @@ footer{
 .ab-btn.btn-a.pressed{box-shadow:inset 0 3px 6px rgba(0,0,0,.6),0 0 30px var(--blood)}
 
 .gamepad-hint{
-  text-align:center;margin:4px auto 0;
-  font-family:var(--font-pixel);font-size:9px;letter-spacing:2px;color:var(--ghost);
+  margin:14px auto 0;
+  font-family:var(--font-pixel);font-size:9px;letter-spacing:1.5px;color:var(--ghost);
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 16px;
+  max-width:540px;
+  padding:0 4vw;
 }
-.gamepad-hint .key{color:var(--bone);background:var(--smoke);border:1px solid var(--blood);padding:2px 6px;margin:0 2px}
+.gamepad-hint .hint-row{
+  display:inline-flex;align-items:center;gap:6px;
+  white-space:nowrap;
+}
+.gamepad-hint .hint-keys{display:inline-flex;gap:3px}
+.gamepad-hint .key{
+  color:var(--bone);background:var(--smoke);
+  border:1px solid var(--blood);
+  padding:2px 6px;
+  font-size:.95em;
+  display:inline-block;
+}
 
 /* ============ TRICKS / 100 LIFEHACKS ============ */
 #tricks{
@@ -2022,10 +2036,19 @@ footer{
   .logo{font-size:clamp(70px,18vw,120px)}
   .aliases{font-size:18px}
   .tagline{font-size:9px;letter-spacing:4px;margin-bottom:32px}
-  .player-card{padding:20px;width:min(420px,92vw)}
-  .avatar-frame{width:110px;height:110px}
-  .player-name{font-size:30px}
-  .player-handle{font-size:16px}
+  .player-card{
+    padding:22px 20px 20px;
+    width:min(420px,92vw);
+    gap:18px;
+    box-shadow:
+      0 0 0 1px var(--pitch),
+      0 0 0 3px var(--blood),
+      0 0 36px rgba(255,0,51,.35),
+      inset 0 0 50px rgba(255,0,51,.05);
+  }
+  .avatar-frame{width:100px;height:100px}
+  .player-name{font-size:28px}
+  .player-handle{font-size:14px;margin-bottom:12px}
   .stat{font-size:8px;padding:6px 8px}
   .btn-roblox{font-size:9px;padding:10px 12px;letter-spacing:2px;gap:8px}
   .btn-roblox .ico{font-size:12px}
@@ -2092,7 +2115,13 @@ footer{
   .gamepad-brand{font-size:18px}
   .gamepad-model{font-size:6px;letter-spacing:2px}
   .start-btn{font-size:8px;padding:6px 14px}
-  .gamepad-hint{font-size:8px;letter-spacing:1.5px;padding:0 4vw}
+  .gamepad-hint{
+    font-size:8px;letter-spacing:1.5px;
+    display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;
+    max-width:280px;padding:0;
+    margin-top:18px;
+  }
+  .gamepad-hint .hint-row{justify-content:flex-start}
 
   /* Tricks */
   .tricks-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
@@ -2186,13 +2215,21 @@ footer{
   .scroll-hint{font-size:14px;letter-spacing:2px;bottom:18px}
 
   /* Player card */
-  .player-card{padding:18px 14px}
-  .player-card::after{font-size:7px;letter-spacing:2px;left:14px}
-  .avatar-frame{width:90px;height:90px}
-  .player-name{font-size:24px}
-  .player-handle{font-size:13px;margin-bottom:10px}
-  .player-stats{gap:6px}
-  .stat{font-size:7px;padding:5px 7px;letter-spacing:1px}
+  .player-card{
+    padding:18px 16px 16px;
+    box-shadow:
+      0 0 0 1px var(--pitch),
+      0 0 0 2px var(--blood),
+      0 0 30px rgba(255,0,51,.3),
+      inset 0 0 40px rgba(255,0,51,.04);
+    gap:14px;
+  }
+  .player-card::after{font-size:7px;letter-spacing:2px;left:14px;padding:0 6px}
+  .avatar-frame{width:80px;height:80px;border-width:1px}
+  .player-name{font-size:22px}
+  .player-handle{font-size:12px;margin-bottom:8px;letter-spacing:.5px}
+  .player-stats{gap:5px;margin-bottom:10px}
+  .stat{font-size:7px;padding:5px 7px;letter-spacing:.5px}
   .btn-roblox{font-size:8px;padding:9px 10px;gap:6px;letter-spacing:1.5px}
   .btn-roblox .ico{font-size:11px}
   .btn-roblox .arrow{font-size:10px}
@@ -2367,7 +2404,7 @@ footer{
   .ab-cluster{gap:8px}
   .gamepad-brand{font-size:14px}
   .gamepad-model{font-size:5px}
-  .gamepad-hint{font-size:7px;letter-spacing:1px}
+  .gamepad-hint{font-size:7px;letter-spacing:1px;max-width:240px;gap:6px 10px}
 
   /* Tricks */
   .trick-card{padding:10px;gap:8px}
@@ -2430,10 +2467,12 @@ footer{
 /* Ultra-tiny / iPhone SE portrait (380px) */
 @media (max-width:380px){
   .logo{font-size:clamp(48px,22vw,68px)}
-  .player-card{padding:14px 10px}
-  .avatar-frame{width:80px;height:80px}
-  .player-name{font-size:20px}
+  .player-card{padding:14px 12px 12px;gap:12px}
+  .avatar-frame{width:70px;height:70px}
+  .player-name{font-size:18px}
+  .player-handle{font-size:11px;margin-bottom:6px}
   .stat{font-size:6px;padding:4px 6px}
+  .btn-roblox{font-size:7px;padding:8px;letter-spacing:1.2px}
   .game-grid{gap:5px}
   .gc-meta h4{font-size:11px}
   .gc-desc{font-size:9px}
@@ -2895,7 +2934,10 @@ footer{
         </div>
       </div>
       <div class="gamepad-hint">
-        Movete con <span class="key">↑</span><span class="key">↓</span> · <span class="key">A</span> reproduce · <span class="key">B</span> aleatorio · <span class="key">START</span> abre canal
+        <span class="hint-row"><span class="hint-keys"><span class="key">↑</span><span class="key">↓</span></span> Movete</span>
+        <span class="hint-row"><span class="hint-keys"><span class="key">A</span></span> Reproduce</span>
+        <span class="hint-row"><span class="hint-keys"><span class="key">B</span></span> Aleatorio</span>
+        <span class="hint-row"><span class="hint-keys"><span class="key">START</span></span> Abre canal</span>
       </div>
 
       <div class="transmission-meta">
