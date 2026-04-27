@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>GUÍA MAESTRA · Roblox Studio · Para Static</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=VT323&family=Press+Start+2P&family=JetBrains+Mono:wght@400;700&family=Russo+One&family=Big+Shoulders+Display:wght@700;900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#050505;
+  --pitch:#000;
+  --ash:#0d0d0d;
+  --smoke:#161616;
+  --bone:#f4f1e8;
+  --blood:#ff0033;
+  --rust:#8b0a1a;
+  --cyan:#00f0ff;
+  --magenta:#ff00aa;
+  --toxic:#39ff14;
+  --gold:#ffb800;
+  --purple:#9b59ff;
+  --ghost:rgba(244,241,232,.4);
+  --ghost2:rgba(244,241,232,.6);
+  --grain:rgba(244,241,232,.02);
+  --font-glitch:'Rubik Glitch',sans-serif;
+  --font-display:'Big Shoulders Display',sans-serif;
+  --font-pixel:'Press Start 2P',monospace;
+  --font-term:'VT323',monospace;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-cyr:'Russo One',sans-serif;
+  --font-body:'Inter',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--void);
+  color:var(--bone);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  cursor:none;
+  min-height:100vh;
+  line-height:1.55;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+}
+@media (hover:none),(pointer:coarse){
+  body{cursor:auto}
+  #cursor{display:none !important}
+}
+a{color:inherit;text-decoration:none;cursor:none}
+button{cursor:none;border:none;background:none;color:inherit;font-family:inherit;font-size:inherit}
+img{max-width:100%;display:block}
+
+/* ============ CUSTOM CURSOR (same as main) ============ */
+#cursor{position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);will-change:transform}
+.cur-core{position:absolute;left:50%;top:50%;width:14px;height:14px;transform:translate(-50%,-50%);pointer-events:none}
+.cur-core::before,.cur-core::after{content:"";position:absolute;inset:0}
+.cur-core::before{
+  background:radial-gradient(circle,var(--blood) 0%,rgba(255,0,51,.5) 30%,transparent 70%);
+  filter:blur(3px);transform:scale(2.4);opacity:.85;
+  transition:background .25s,transform .25s,opacity .25s;
+}
+.cur-core::after{
+  background:var(--bone);border-radius:50%;
+  box-shadow:0 0 8px var(--blood),0 0 16px var(--blood),0 0 24px rgba(255,0,51,.5);
+  transform:scale(.5);
+  transition:background .2s,box-shadow .25s,transform .15s;
+  animation:cur-twinkle 1.4s ease-in-out infinite;
+}
+@keyframes cur-twinkle{0%,100%{transform:scale(.5)}50%{transform:scale(.7)}}
+.cur-spikes{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%);pointer-events:none;animation:spike-rotate 6s linear infinite}
+@keyframes spike-rotate{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.cur-spikes svg{width:100%;height:100%;display:block;overflow:visible}
+.cur-spikes path{
+  fill:var(--bone);
+  filter:drop-shadow(0 0 4px var(--blood)) drop-shadow(0 0 10px var(--blood));
+  transition:fill .25s,filter .25s;
+}
+.spark{position:fixed;pointer-events:none;z-index:99998;width:6px;height:6px;border-radius:50%;background:var(--blood);box-shadow:0 0 8px var(--blood),0 0 14px var(--blood);transform:translate(-50%,-50%);will-change:transform,opacity}
+body.cur-link .cur-core::before{background:radial-gradient(circle,var(--gold) 0%,rgba(255,184,0,.5) 30%,transparent 70%);transform:scale(3.2)}
+body.cur-link .cur-core::after{box-shadow:0 0 10px var(--gold),0 0 20px var(--gold),0 0 30px rgba(255,184,0,.5);transform:scale(.7)}
+body.cur-link .cur-spikes path{filter:drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 12px var(--gold))}
+body.cur-code .cur-core::before{background:radial-gradient(circle,var(--toxic) 0%,rgba(57,255,20,.5) 30%,transparent 70%);transform:scale(3.2)}
+body.cur-code .cur-core::after{box-shadow:0 0 10px var(--toxic),0 0 20px var(--toxic),0 0 30px rgba(57,255,20,.5);transform:scale(.7)}
+body.cur-code .cur-spikes path{filter:drop-shadow(0 0 4px var(--toxic)) drop-shadow(0 0 12px var(--toxic))}
+.click-ring{position:fixed;pointer-events:none;z-index:99997;width:24px;height:24px;border-radius:50%;border:2px solid var(--blood);transform:translate(-50%,-50%) scale(.3);animation:click-pop .55s cubic-bezier(.2,.8,.2,1) forwards;filter:drop-shadow(0 0 8px var(--blood))}
+@keyframes click-pop{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(-50%,-50%) scale(3.5);opacity:0}}
+
+/* ============ CRT OVERLAYS (subtle) ============ */
+.crt-scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:50;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px);
+  mix-blend-mode:multiply;
+}
+.crt-vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:51;
+  background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.7) 100%);
+}
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:52;opacity:.12;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  animation:grainmove .2s steps(5) infinite;
+}
+@keyframes grainmove{
+  0%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}
+  40%{transform:translate(1%,-2%)}60%{transform:translate(-1%,2%)}
+  80%{transform:translate(2%,-1%)}100%{transform:translate(0,0)}
+}
+
+/* ============ TOP NAV ============ */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,5,5,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--blood);
+  padding:14px 5vw;
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+}
+.topbar-brand{
+  font-family:var(--font-glitch);font-size:24px;
+  color:var(--bone);letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+}
+.topbar-brand .skull{color:var(--blood);font-size:20px;filter:drop-shadow(0 0 6px var(--blood))}
+.topbar-brand .v{color:var(--gold);font-family:var(--font-pixel);font-size:9px;letter-spacing:2px}
+.topbar-back{
+  font-family:var(--font-pixel);font-size:9px;letter-spacing:2px;
+  color:var(--bone);border:1px solid var(--blood);
+  padding:8px 12px;cursor:none;transition:all .2s;
+  background:transparent;
+}
+.topbar-back:hover{background:var(--blood);color:var(--pitch);box-shadow:0 0 16px rgba(255,0,51,.5)}
+
+/* ============ PROGRESS BAR ============ */
+.progress-bar{
+  position:fixed;top:60px;left:0;right:0;
+  height:3px;z-index:99;
+  background:transparent;
+  pointer-events:none;
+}
+.progress-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--blood),var(--gold),var(--cyan));
+  box-shadow:0 0 12px var(--gold);
+  transition:width .15s linear;
+}
+
+/* ============ HERO ============ */
+#hero{
+  min-height:80vh;
+  padding:80px 5vw 60px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;
+  position:relative;
+  background:
+    radial-gradient(ellipse at 30% 20%,rgba(155,89,255,.15),transparent 50%),
+    radial-gradient(ellipse at 70% 70%,rgba(255,184,0,.12),transparent 50%),
+    var(--pitch);
+}
+#hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,184,0,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,184,0,.05) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
+  pointer-events:none;
+}
+.hero-tag{
+  font-family:var(--font-pixel);font-size:10px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:30px;
+  text-shadow:0 0 8px var(--gold);
+  position:relative;z-index:2;
+}
+.hero-title{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(60px,11vw,160px);line-height:.85;
+  color:var(--bone);letter-spacing:-.02em;
+  margin-bottom:24px;text-transform:uppercase;
+  position:relative;z-index:2;
+}
+.hero-title .accent{color:var(--gold)}
+.hero-title .glitch{
+  display:inline-block;position:relative;
+  text-shadow:3px 3px 0 var(--blood),-3px -3px 0 var(--cyan);
+}
+.hero-sub{
+  font-family:var(--font-term);font-size:clamp(20px,2.5vw,28px);
+  color:var(--ghost2);max-width:700px;line-height:1.4;
+  margin-bottom:40px;letter-spacing:1px;
+  position:relative;z-index:2;
+}
+.hero-sub b{color:var(--bone)}
+.hero-stats{
+  display:flex;gap:24px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:40px;position:relative;z-index:2;
+}
+.hero-stat{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:14px 24px;
+  border:1px solid var(--gold);
+  background:rgba(255,184,0,.06);
+}
+.hero-stat .v{
+  font-family:var(--font-display);font-weight:900;font-size:36px;
+  color:var(--gold);line-height:1;
+  text-shadow:0 0 10px rgba(255,184,0,.5);
+}
+.hero-stat .l{
+  font-family:var(--font-pixel);font-size:8px;letter-spacing:2px;color:var(--ghost2);
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--font-pixel);font-size:12px;letter-spacing:3px;
+  background:var(--gold);color:var(--pitch);
+  padding:18px 28px;cursor:none;
+  box-shadow:6px 6px 0 var(--blood);
+  transition:all .2s;
+  position:relative;z-index:2;
+}
+.hero-cta:hover{
+  background:var(--bone);color:var(--blood);
+  transform:translate(-3px,-3px);
+  box-shadow:9px 9px 0 var(--blood);
+}
+
+/* ============ TOC (TABLE OF CONTENTS) ============ */
+#toc{padding:60px 5vw;background:var(--pitch);position:relative}
+.toc-wrap{max-width:1200px;margin:0 auto}
+.toc-head{
+  text-align:center;margin-bottom:50px;
+}
+.toc-tag{
+  font-family:var(--font-pixel);font-size:10px;letter-spacing:5px;
+  color:var(--blood);margin-bottom:14px;
+}
+.toc-title{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(40px,7vw,80px);line-height:.95;
+  color:var(--bone);letter-spacing:-.02em;
+  text-transform:uppercase;
+}
+.toc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px;
+}
+.toc-card{
+  background:linear-gradient(135deg,var(--ash),var(--smoke));
+  border:1px solid rgba(255,184,0,.3);
+  padding:20px;cursor:none;
+  transition:all .25s;
+  position:relative;overflow:hidden;
+  display:block;
+}
+.toc-card::before{
+  content:"";position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--gold);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .3s;
+}
+.toc-card:hover{
+  border-color:var(--gold);
+  transform:translateX(6px);
+  box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 0 30px rgba(255,184,0,.05);
+}
+.toc-card:hover::before{transform:scaleY(1)}
+.toc-num{
+  font-family:var(--font-glitch);font-size:32px;
+  color:var(--gold);line-height:1;
+  letter-spacing:-.02em;margin-bottom:8px;
+  filter:drop-shadow(0 0 6px rgba(255,184,0,.4));
+}
+.toc-card-title{
+  font-family:var(--font-display);font-weight:900;
+  font-size:18px;color:var(--bone);
+  text-transform:uppercase;letter-spacing:.01em;line-height:1.1;
+  margin-bottom:6px;
+}
+.toc-card-desc{
+  font-family:var(--font-mono);font-size:12px;color:var(--ghost2);
+  line-height:1.4;
+}
+
+/* ============ CHAPTER ============ */
+.chapter{
+  padding:80px 5vw;
+  border-top:1px solid rgba(255,184,0,.15);
+  position:relative;
+}
+.chapter:nth-child(odd){background:linear-gradient(180deg,var(--pitch),#080406)}
+.chapter:nth-child(even){background:var(--pitch)}
+.chapter-inner{max-width:880px;margin:0 auto}
+
+.ch-head{
+  margin-bottom:40px;
+}
+.ch-num{
+  display:inline-block;
+  font-family:var(--font-pixel);font-size:10px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:10px;
+  padding:6px 12px;border:1px solid var(--gold);
+  text-shadow:0 0 6px rgba(255,184,0,.4);
+}
+.ch-title{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(36px,6vw,72px);line-height:.95;
+  color:var(--bone);letter-spacing:-.02em;
+  margin-bottom:18px;text-transform:uppercase;
+}
+.ch-title .acc{color:var(--gold)}
+.ch-intro{
+  font-family:var(--font-term);font-size:clamp(20px,2.5vw,26px);
+  color:var(--ghost2);line-height:1.4;letter-spacing:.5px;
+  border-left:3px solid var(--gold);padding:8px 0 8px 18px;
+  background:linear-gradient(90deg,rgba(255,184,0,.05),transparent);
+}
+
+.ch-body h3{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(24px,3vw,32px);
+  color:var(--bone);letter-spacing:-.01em;
+  margin:40px 0 14px;
+  padding-left:14px;border-left:3px solid var(--blood);
+  text-transform:uppercase;line-height:1;
+}
+.ch-body p{
+  font-size:17px;line-height:1.65;
+  color:var(--ghost2);
+  margin-bottom:14px;
+}
+.ch-body p b,.ch-body li b{color:var(--bone);font-weight:700}
+.ch-body code:not(pre code){
+  font-family:var(--font-mono);font-size:14px;
+  background:rgba(255,0,51,.18);color:var(--gold);
+  padding:2px 6px;border-radius:2px;
+}
+.ch-body ul{
+  list-style:none;padding:0;margin:0 0 20px;
+}
+.ch-body li{
+  font-size:17px;line-height:1.55;
+  color:var(--ghost2);
+  padding-left:24px;position:relative;
+  margin-bottom:10px;
+}
+.ch-body li::before{
+  content:"▸";position:absolute;left:0;top:0;
+  color:var(--blood);font-weight:bold;
+  text-shadow:0 0 4px var(--blood);
+}
+
+/* CALLOUTS */
+.callout{
+  margin:24px 0;
+  padding:18px 22px;
+  background:rgba(255,184,0,.08);
+  border-left:4px solid var(--gold);
+  border-radius:2px;
+  position:relative;
+}
+.callout.warn{background:rgba(255,0,51,.08);border-left-color:var(--blood)}
+.callout.tip{background:rgba(57,255,20,.06);border-left-color:var(--toxic)}
+.callout.quote{background:rgba(155,89,255,.08);border-left-color:var(--purple)}
+.callout-tag{
+  font-family:var(--font-pixel);font-size:9px;letter-spacing:3px;
+  color:var(--gold);margin-bottom:8px;
+  text-shadow:0 0 6px rgba(255,184,0,.4);
+}
+.callout.warn .callout-tag{color:var(--blood);text-shadow:0 0 6px var(--blood)}
+.callout.tip .callout-tag{color:var(--toxic);text-shadow:0 0 6px var(--toxic)}
+.callout.quote .callout-tag{color:var(--purple);text-shadow:0 0 6px var(--purple)}
+.callout p{margin:0;color:var(--bone);font-size:16px;line-height:1.5}
+.callout.quote p{font-family:var(--font-display);font-style:italic;font-weight:700;font-size:clamp(20px,2.5vw,26px);color:var(--bone)}
+.callout.quote p::before{content:"❝ ";color:var(--purple);font-style:normal}
+.callout.quote p::after{content:" ❞";color:var(--purple);font-style:normal}
+
+/* CODE BLOCKS — Luau syntax highlight */
+.code-block{
+  margin:24px 0;
+  background:#0a0a0d;
+  border:1px solid rgba(57,255,20,.3);
+  border-radius:4px;
+  position:relative;overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+.code-block::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:30px;
+  background:linear-gradient(180deg,rgba(57,255,20,.06),transparent);
+  pointer-events:none;
+}
+.code-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;
+  background:#050507;
+  border-bottom:1px solid rgba(57,255,20,.15);
+  font-family:var(--font-pixel);font-size:8px;letter-spacing:2px;
+  color:var(--toxic);
+}
+.code-header .lang{
+  display:flex;align-items:center;gap:8px;
+}
+.code-header .lang::before{
+  content:"";width:8px;height:8px;border-radius:50%;
+  background:var(--toxic);
+  box-shadow:0 0 6px var(--toxic);
+  animation:dot-pulse 1.4s ease-in-out infinite;
+}
+@keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.code-copy{
+  font-family:var(--font-pixel);font-size:8px;letter-spacing:2px;
+  color:var(--ghost2);cursor:none;
+  background:transparent;border:1px solid var(--ghost);
+  padding:4px 8px;transition:all .15s;
+}
+.code-copy:hover{color:var(--toxic);border-color:var(--toxic)}
+.code-copy.copied{background:var(--toxic);color:var(--pitch);border-color:var(--toxic)}
+.code-block pre{
+  margin:0;padding:18px 20px;
+  font-family:var(--font-mono);font-size:13.5px;line-height:1.6;
+  color:var(--bone);
+  overflow-x:auto;
+  white-space:pre;
+}
+.code-block pre code{font-family:inherit;font-size:inherit;background:none;padding:0;color:inherit}
+/* Luau syntax tokens (added by JS) */
+.k{color:#ff6b9d;font-weight:600}      /* keyword */
+.s{color:#39ff14}                       /* string */
+.n{color:#ffb800}                       /* number */
+.c{color:#666;font-style:italic}        /* comment */
+.f{color:#00f0ff}                       /* function name */
+.b{color:#9b59ff}                       /* builtin */
+.o{color:#ff0033;font-weight:600}       /* operator */
+
+/* ASCII / DIAGRAM */
+.ascii-box{
+  margin:24px 0;
+  padding:18px;
+  background:#0a0a0d;
+  border:1px solid rgba(255,184,0,.2);
+  font-family:var(--font-mono);font-size:13px;line-height:1.4;
+  color:var(--gold);white-space:pre;
+  overflow-x:auto;
+  text-shadow:0 0 4px rgba(255,184,0,.3);
+}
+
+/* CHECKLIST */
+.checklist{
+  margin:24px 0;padding:24px;
+  background:linear-gradient(135deg,rgba(255,0,51,.08),rgba(255,184,0,.04));
+  border:2px dashed var(--gold);
+}
+.checklist-title{
+  font-family:var(--font-pixel);font-size:11px;letter-spacing:4px;
+  color:var(--gold);margin-bottom:16px;
+  text-shadow:0 0 6px rgba(255,184,0,.4);
+}
+.checklist label{
+  display:flex;align-items:center;gap:12px;cursor:none;
+  padding:8px 0;
+  font-size:16px;color:var(--bone);
+  border-bottom:1px solid rgba(255,184,0,.1);
+  transition:color .2s;
+}
+.checklist label:last-child{border-bottom:none}
+.checklist input[type="checkbox"]{
+  appearance:none;width:22px;height:22px;
+  border:2px solid var(--gold);background:transparent;cursor:none;
+  position:relative;flex-shrink:0;
+  transition:all .15s;
+}
+.checklist input[type="checkbox"]:checked{
+  background:var(--gold);box-shadow:0 0 10px rgba(255,184,0,.5);
+}
+.checklist input[type="checkbox"]:checked::after{
+  content:"✓";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  color:var(--pitch);font-weight:bold;font-size:16px;
+}
+.checklist input[type="checkbox"]:checked + span{
+  text-decoration:line-through;
+  color:var(--ghost);
+}
+
+/* TABLE */
+.props-table{
+  margin:24px 0;
+  width:100%;border-collapse:collapse;
+  background:var(--ash);
+  border:1px solid var(--blood);
+  font-size:15px;
+}
+.props-table th,.props-table td{
+  padding:12px 14px;
+  text-align:left;
+  border-bottom:1px solid rgba(255,0,51,.2);
+}
+.props-table th{
+  font-family:var(--font-pixel);font-size:9px;letter-spacing:2px;
+  background:rgba(255,0,51,.15);
+  color:var(--blood);
+  text-transform:uppercase;
+}
+.props-table td{color:var(--ghost2);line-height:1.45}
+.props-table td:first-child{font-family:var(--font-mono);color:var(--gold);font-weight:700;white-space:nowrap}
+.props-table tr:last-child td{border-bottom:none}
+.props-table tr:hover td{background:rgba(255,0,51,.04)}
+
+/* BAR CHART (Trends) */
+.bars{
+  margin:30px 0;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:12px;align-items:end;
+  height:280px;padding:0 0 30px;
+  border-bottom:2px solid var(--blood);
+  position:relative;
+}
+.bars::before{
+  content:"500K";position:absolute;top:0;left:-44px;
+  font-family:var(--font-pixel);font-size:8px;color:var(--ghost);letter-spacing:1px;
+}
+.bars::after{
+  content:"0";position:absolute;bottom:32px;left:-14px;
+  font-family:var(--font-pixel);font-size:8px;color:var(--ghost);letter-spacing:1px;
+}
+.bar{
+  position:relative;
+  background:linear-gradient(180deg,var(--blood),var(--rust));
+  display:flex;flex-direction:column;align-items:center;
+  border-top:2px solid var(--bone);
+  animation:bar-grow 1.5s cubic-bezier(.2,.8,.2,1) backwards;
+}
+@keyframes bar-grow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1)}}
+.bar .v{
+  position:absolute;top:-26px;
+  font-family:var(--font-display);font-weight:900;font-size:14px;
+  color:var(--bone);
+}
+.bar .l{
+  position:absolute;bottom:-28px;left:0;right:0;
+  text-align:center;
+  font-family:var(--font-mono);font-size:11px;color:var(--ghost2);
+  white-space:nowrap;
+}
+
+/* PILLS */
+.pills{
+  margin:24px 0;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;
+}
+.pill{
+  background:linear-gradient(135deg,var(--purple),#5e2db5);
+  padding:18px;border-radius:8px;
+  position:relative;overflow:hidden;
+}
+.pill::before{
+  content:"";position:absolute;
+  top:-50%;right:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at center,rgba(255,255,255,.08),transparent 50%);
+  pointer-events:none;
+}
+.pill .v{
+  font-family:var(--font-display);font-weight:900;font-size:30px;
+  color:var(--bone);line-height:1;margin-bottom:4px;
+  position:relative;
+}
+.pill .l{
+  font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.7);
+  letter-spacing:.5px;line-height:1.3;
+  position:relative;
+}
+
+/* CHAPTER NAVIGATION */
+.ch-nav{
+  margin-top:50px;
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.ch-nav-btn{
+  background:rgba(255,0,51,.05);
+  border:1px solid var(--blood);
+  padding:18px 20px;cursor:none;
+  display:flex;flex-direction:column;gap:6px;
+  text-align:left;
+  transition:all .2s;
+  text-decoration:none;color:inherit;
+}
+.ch-nav-btn:hover{background:rgba(255,0,51,.15);box-shadow:0 0 24px rgba(255,0,51,.2)}
+.ch-nav-btn.next{text-align:right}
+.ch-nav-btn .lbl{
+  font-family:var(--font-pixel);font-size:8px;letter-spacing:3px;color:var(--ghost2);
+}
+.ch-nav-btn .nm{
+  font-family:var(--font-display);font-weight:900;font-size:18px;
+  color:var(--bone);text-transform:uppercase;line-height:1;
+}
+.ch-nav-btn.disabled{opacity:.3;pointer-events:none}
+
+/* FINAL */
+#final{
+  padding:100px 5vw;
+  text-align:center;
+  background:
+    radial-gradient(ellipse at center,rgba(255,184,0,.15),transparent 60%),
+    var(--pitch);
+  border-top:2px solid var(--gold);
+}
+.final-badge{
+  font-family:var(--font-glitch);font-size:clamp(50px,9vw,90px);
+  color:var(--gold);line-height:.9;
+  text-shadow:0 0 30px rgba(255,184,0,.5),3px 3px 0 var(--blood),-3px -3px 0 var(--cyan);
+  margin-bottom:24px;
+}
+.final-msg{
+  font-family:var(--font-term);font-size:clamp(20px,2.5vw,28px);
+  color:var(--bone);max-width:700px;margin:0 auto 30px;
+  line-height:1.4;
+}
+.final-msg b{color:var(--gold)}
+.final-sig{
+  font-family:var(--font-pixel);font-size:9px;letter-spacing:4px;
+  color:var(--ghost2);margin-top:30px;
+}
+#final .btn-back{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--font-pixel);font-size:11px;letter-spacing:3px;
+  background:var(--blood);color:var(--pitch);
+  padding:18px 26px;cursor:none;
+  box-shadow:6px 6px 0 var(--gold);
+  transition:all .2s;text-decoration:none;
+  margin-top:20px;
+}
+#final .btn-back:hover{
+  background:var(--bone);color:var(--blood);
+  transform:translate(-3px,-3px);
+  box-shadow:9px 9px 0 var(--gold);
+}
+
+/* ============================================================
+   RESPONSIVE — MULTI-BREAKPOINT
+   ============================================================ */
+
+/* Tablet (1024px) */
+@media (max-width:1024px){
+  .toc-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .chapter{padding:70px 5vw}
+  .ch-body p,.ch-body li{font-size:16px}
+}
+
+/* Tablet portrait / large phone (768px) */
+@media (max-width:768px){
+  .topbar{padding:12px 4vw;flex-wrap:wrap;gap:10px}
+  .topbar-brand{font-size:18px}
+  .topbar-brand .v{font-size:8px}
+  .topbar-back{font-size:8px;padding:6px 10px;letter-spacing:1.5px}
+  .progress-bar{top:50px}
+
+  /* Hero */
+  #hero{padding:50px 4vw 40px}
+  .hero-tag{font-size:9px;letter-spacing:3px;margin-bottom:20px}
+  .hero-title{font-size:clamp(46px,14vw,80px)}
+  .hero-sub{font-size:16px;margin-bottom:30px;line-height:1.4}
+  .hero-stat{padding:10px 16px}
+  .hero-stat .v{font-size:28px}
+  .hero-stat .l{font-size:7px}
+  .hero-cta{font-size:10px;padding:14px 20px;letter-spacing:2px}
+
+  /* TOC */
+  #toc{padding:40px 4vw}
+  .toc-head{margin-bottom:30px}
+  .toc-tag{font-size:9px;letter-spacing:3px}
+  .toc-title{font-size:clamp(34px,10vw,60px)}
+  .toc-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .toc-card{padding:14px}
+  .toc-num{font-size:24px;margin-bottom:4px}
+  .toc-card-title{font-size:14px}
+  .toc-card-desc{font-size:11px}
+
+  /* Chapters */
+  .chapter{padding:50px 4vw}
+  .ch-head{margin-bottom:28px}
+  .ch-num{font-size:9px;padding:5px 10px;letter-spacing:3px}
+  .ch-title{font-size:clamp(30px,8vw,52px);margin-bottom:14px}
+  .ch-intro{font-size:17px;line-height:1.45;padding:6px 0 6px 14px}
+  .ch-body h3{font-size:21px;margin:30px 0 12px;padding-left:12px}
+  .ch-body p,.ch-body li{font-size:15px;line-height:1.55}
+
+  /* Callouts */
+  .callout{padding:14px 16px;margin:20px 0}
+  .callout-tag{font-size:8px;letter-spacing:2.5px}
+  .callout p{font-size:14px}
+  .callout.quote p{font-size:18px}
+
+  /* Code */
+  .code-block pre{font-size:12px;padding:14px;line-height:1.5}
+  .code-header{padding:6px 12px;font-size:7px}
+  .code-copy{font-size:7px;padding:3px 6px}
+
+  /* Tables */
+  .props-table{font-size:13px}
+  .props-table th,.props-table td{padding:8px 10px}
+  .props-table th{font-size:8px}
+
+  /* Bars */
+  .bars{grid-template-columns:repeat(6,1fr);gap:6px;height:200px;padding:0 0 28px}
+  .bars::before{font-size:7px;left:-32px}
+  .bar .v{font-size:11px;top:-20px}
+  .bar .l{font-size:9px;bottom:-22px}
+
+  /* Pills */
+  .pills{grid-template-columns:repeat(2,1fr);gap:8px}
+  .pill{padding:14px}
+  .pill .v{font-size:24px}
+  .pill .l{font-size:10px}
+
+  /* ASCII */
+  .ascii-box{font-size:11px;padding:14px;line-height:1.35;overflow-x:auto}
+
+  /* Checklist */
+  .checklist{padding:18px 16px}
+  .checklist-title{font-size:9px;letter-spacing:3px;margin-bottom:12px}
+  .checklist label{font-size:14px;padding:6px 0;gap:10px}
+  .checklist input[type="checkbox"]{width:18px;height:18px}
+
+  /* Nav */
+  .ch-nav{grid-template-columns:1fr;gap:10px;margin-top:36px}
+  .ch-nav-btn{padding:14px 16px}
+  .ch-nav-btn.next{text-align:left}
+  .ch-nav-btn .lbl{font-size:7px;letter-spacing:2px}
+  .ch-nav-btn .nm{font-size:15px}
+
+  /* Final */
+  #final{padding:60px 4vw}
+  .final-badge{font-size:clamp(40px,12vw,64px)}
+  .final-msg{font-size:16px;margin-bottom:18px}
+  #final .btn-back{font-size:9px;padding:14px 20px}
+  .final-sig{font-size:7px;margin-top:20px}
+}
+
+/* Small phones (480px) */
+@media (max-width:480px){
+  .topbar-brand{font-size:15px}
+  .topbar-brand .skull{font-size:16px}
+  .topbar-back{font-size:7px}
+  .progress-bar{top:46px}
+
+  #hero{padding:40px 3vw 30px}
+  .hero-title{font-size:clamp(38px,15vw,60px)}
+  .hero-sub{font-size:14px}
+  .hero-stats{gap:10px}
+  .hero-stat{padding:8px 12px}
+  .hero-stat .v{font-size:22px}
+  .hero-cta{font-size:9px;padding:12px 16px}
+
+  #toc{padding:30px 3vw}
+  .toc-grid{grid-template-columns:1fr;gap:8px}
+  .toc-card{padding:12px;display:flex;align-items:center;gap:12px}
+  .toc-card::before{width:3px}
+  .toc-num{font-size:22px;margin-bottom:0;flex-shrink:0;min-width:36px}
+  .toc-card-title{font-size:13px;line-height:1.1;margin-bottom:2px}
+  .toc-card-desc{font-size:10px}
+
+  .chapter{padding:40px 3vw}
+  .ch-num{font-size:8px;letter-spacing:2.5px}
+  .ch-title{font-size:clamp(26px,9vw,44px)}
+  .ch-intro{font-size:14px;padding:6px 0 6px 12px}
+  .ch-body h3{font-size:18px;margin:24px 0 10px;padding-left:10px;border-left-width:2px}
+  .ch-body p,.ch-body li{font-size:14px;line-height:1.55}
+  .ch-body code:not(pre code){font-size:12px;padding:1px 4px}
+  .ch-body li{padding-left:18px;margin-bottom:8px}
+
+  .callout{padding:12px 14px;margin:16px 0;border-left-width:3px}
+  .callout p{font-size:13px}
+  .callout.quote p{font-size:16px}
+
+  .code-block pre{font-size:11px;padding:12px;line-height:1.5}
+  .code-header{padding:5px 10px}
+
+  .props-table{font-size:12px}
+  .props-table th,.props-table td{padding:6px 8px}
+
+  .bars{height:170px;padding:0 0 24px;gap:4px}
+  .bars::before{display:none}
+  .bars::after{display:none}
+  .bar .v{font-size:9px;top:-18px}
+  .bar .l{font-size:8px;bottom:-20px}
+
+  .pills{grid-template-columns:1fr 1fr;gap:6px}
+  .pill{padding:12px}
+  .pill .v{font-size:20px}
+  .pill .l{font-size:9px}
+
+  .ascii-box{font-size:10px;padding:10px;line-height:1.3}
+
+  .checklist{padding:14px 12px}
+  .checklist label{font-size:13px;padding:5px 0;gap:8px}
+  .checklist input[type="checkbox"]{width:16px;height:16px}
+
+  .ch-nav-btn{padding:12px 14px}
+  .ch-nav-btn .nm{font-size:14px}
+
+  .final-badge{font-size:clamp(34px,13vw,54px)}
+  .final-msg{font-size:14px}
+  #final .btn-back{font-size:8px;padding:12px 18px}
+}
+
+/* Ultra-tiny */
+@media (max-width:380px){
+  .topbar-brand{font-size:13px}
+  .hero-title{font-size:clamp(32px,16vw,52px)}
+  .hero-stats{flex-direction:row;flex-wrap:wrap}
+  .hero-stat{flex:1;min-width:90px;padding:7px 10px}
+  .hero-stat .v{font-size:18px}
+  .toc-num{font-size:18px;min-width:30px}
+  .toc-card-title{font-size:12px}
+  .toc-card-desc{font-size:9px}
+  .ch-title{font-size:clamp(22px,10vw,38px)}
+  .ch-body p,.ch-body li{font-size:13px}
+  .code-block pre{font-size:10.5px}
+}
+
+/* Touch device */
+@media (hover:none),(pointer:coarse){
+  body{cursor:auto}
+  #cursor,.spark,.click-ring{display:none !important}
+  .toc-card,.code-copy,.ch-nav-btn,.checklist label{min-height:44px}
+  .toc-card:hover{transform:none}
+  .toc-card:active{transform:translateX(3px)}
+}
+
+/* Landscape low-height */
+@media (max-height:500px) and (orientation:landscape){
+  #hero{min-height:auto;padding:30px 4vw}
+  .hero-stats{margin-bottom:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== CUSTOM CURSOR ====== -->
+<div id="cursor" aria-hidden="true">
+  <div class="cur-spikes">
+    <svg viewBox="-15 -15 30 30">
+      <path d="M0,-13 L1.6,-1.6 L13,0 L1.6,1.6 L0,13 L-1.6,1.6 L-13,0 L-1.6,-1.6 Z"></path>
+    </svg>
+  </div>
+  <div class="cur-core"></div>
+</div>
+
+<!-- ====== CRT OVERLAYS ====== -->
+<div class="grain"></div>
+<div class="crt-scanlines"></div>
+<div class="crt-vignette"></div>
+
+<!-- ====== TOPBAR ====== -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <span class="skull">☠</span> GUÍA <span class="v">v1.0</span>
+  </div>
+  <a class="topbar-back" href="staticverse.html">← VOLVER A STATICVERSE</a>
+</div>
+
+<!-- READING PROGRESS -->
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+<!-- ====== HERO ====== -->
+<section id="hero">
+  <div class="hero-tag">★ GUÍA MAESTRA · v1.0 · ABRIL 2026 ★</div>
+  <h1 class="hero-title">
+    ROBLOX<br>
+    <span class="accent"><span class="glitch">STUDIO</span></span>
+  </h1>
+  <p class="hero-sub">Cómo crear mundos a los que <b>miles de personas</b> van a querer jugar.<br>Para Static · 14 capítulos · 100 trucos.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="v">14</span><span class="l">CAPÍTULOS</span></div>
+    <div class="hero-stat"><span class="v">100</span><span class="l">TRUCOS</span></div>
+    <div class="hero-stat"><span class="v">∞</span><span class="l">POSIBILIDADES</span></div>
+  </div>
+  <a class="hero-cta" href="#cap-01">▶ EMPEZAR EL VIAJE</a>
+</section>
+
+<!-- ====== TOC ====== -->
+<section id="toc">
+  <div class="toc-wrap">
+    <div class="toc-head">
+      <div class="toc-tag">▼ ÍNDICE</div>
+      <h2 class="toc-title">14 NIVELES</h2>
+    </div>
+    <div class="toc-grid">
+      <a href="#cap-01" class="toc-card"><div class="toc-num">01</div><div class="toc-card-title">Anatomía<br>de Studio</div><div class="toc-card-desc">Las 4 zonas que tenés que conocer</div></a>
+      <a href="#cap-02" class="toc-card"><div class="toc-num">02</div><div class="toc-card-title">Filosofía<br>del juego</div><div class="toc-card-desc">¿Por qué algunos pegan y otros no?</div></a>
+      <a href="#cap-03" class="toc-card"><div class="toc-num">03</div><div class="toc-card-title">Construir</div><div class="toc-card-desc">Cubos, modelos, terreno</div></a>
+      <a href="#cap-04" class="toc-card"><div class="toc-num">04</div><div class="toc-card-title">Iluminación<br>&amp; FX</div><div class="toc-card-desc">La diferencia entre amateur y pro</div></a>
+      <a href="#cap-05" class="toc-card"><div class="toc-num">05</div><div class="toc-card-title">Programar<br>con Luau</div><div class="toc-card-desc">La magia: variables, eventos, módulos</div></a>
+      <a href="#cap-06" class="toc-card"><div class="toc-num">06</div><div class="toc-card-title">UI / UX</div><div class="toc-card-desc">La cara de tu juego</div></a>
+      <a href="#cap-07" class="toc-card"><div class="toc-num">07</div><div class="toc-card-title">Performance</div><div class="toc-card-desc">Que no se trabe</div></a>
+      <a href="#cap-08" class="toc-card"><div class="toc-num">08</div><div class="toc-card-title">FTUE &amp;<br>Retención</div><div class="toc-card-desc">Los primeros 60 segundos</div></a>
+      <a href="#cap-09" class="toc-card"><div class="toc-num">09</div><div class="toc-card-title">Monetización</div><div class="toc-card-desc">Ganar Robux de verdad</div></a>
+      <a href="#cap-10" class="toc-card"><div class="toc-num">10</div><div class="toc-card-title">Marketing</div><div class="toc-card-desc">Cómo te encuentran</div></a>
+      <a href="#cap-11" class="toc-card"><div class="toc-num">11</div><div class="toc-card-title">Tendencias<br>2026</div><div class="toc-card-desc">Lo que está prendiendo fuego</div></a>
+      <a href="#cap-12" class="toc-card"><div class="toc-num">12</div><div class="toc-card-title">Lo que<br>ojalá supiera</div><div class="toc-card-desc">10 años de lecciones</div></a>
+      <a href="#cap-13" class="toc-card"><div class="toc-num">13</div><div class="toc-card-title">100 Trucos</div><div class="toc-card-desc">El extracto final</div></a>
+      <a href="#cap-14" class="toc-card"><div class="toc-num">14</div><div class="toc-card-title">Recursos<br>en español</div><div class="toc-card-desc">Sigue aprendiendo</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTERS ============ -->
+
+<section class="chapter" id="cap-01">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 01</div>
+      <h2 class="ch-title">ANATOMÍA<br>DE <span class="acc">ROBLOX STUDIO</span></h2>
+      <p class="ch-intro">Studio es como una caja de Lego mágica con un cerebro. Vamos a aprender qué hace cada cosa.</p>
+    </div>
+    <div class="ch-body">
+      <h3>1.1 Las 4 zonas que tenés que conocer</h3>
+      <p><b>Vista 3D</b> (el medio). Acá ves tu mundo. Movés la cámara con clic derecho + WASD. Es donde construís.</p>
+      <p><b>Explorer</b> (a la izquierda). Es la lista de TODO lo que hay en tu juego. Cubos, luces, sonidos, scripts. Si no está en Explorer, no existe.</p>
+      <p><b>Properties</b> (a la derecha). Cuando hacés clic en algo, acá ves sus propiedades: tamaño, color, posición. Cambiás un número y el mundo cambia.</p>
+      <p><b>Output</b> (abajo). Es la consola. Cuando algo se rompe en tu código, el mensaje rojo aparece acá. Mirala SIEMPRE.</p>
+
+      <h3>1.2 La estructura: dónde va cada cosa</h3>
+      <div class="ascii-box">game
+├─ Workspace          ← todo lo del mundo (cubos, modelos, NPCs)
+├─ ReplicatedStorage  ← cliente + servidor (eventos, módulos)
+├─ ServerScriptService ← solo servidor (DataStore, anti-trampas)
+├─ StarterGui         ← interfaz UI
+├─ StarterPlayer      ← lo que recibe el jugador
+└─ Lighting           ← sol, luna, atmósfera</div>
+      <ul>
+        <li><b>Workspace</b> — todo lo que se ve y toca el jugador.</li>
+        <li><b>ReplicatedStorage</b> — cosas que el servidor Y el jugador necesitan ver.</li>
+        <li><b>ServerScriptService</b> — los scripts secretos del servidor. Acá va lo importante.</li>
+        <li><b>StarterGui</b> — la interfaz: botones, contadores, menús.</li>
+        <li><b>StarterPlayer / StarterPack</b> — lo que recibe el jugador cuando entra.</li>
+        <li><b>Lighting</b> — el sol, la luna, los efectos del cielo.</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="callout-tag">⚠ ERROR TÍPICO</div>
+        <p>Poner un script importante en <code>Workspace</code>. Si lo hacés, los hackers lo pueden ver. Los scripts del servidor SIEMPRE van en <code>ServerScriptService</code>.</p>
+      </div>
+
+      <h3>1.3 Los 3 tipos de scripts</h3>
+      <ul>
+        <li><b>Script</b> — corre en el servidor. Datos importantes, dinero, vida, daño.</li>
+        <li><b>LocalScript</b> — corre en la compu del jugador. Animaciones, UI, efectos visuales.</li>
+        <li><b>ModuleScript</b> — código compartido. No corre solo, otros scripts lo "piden prestado".</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 REGLA DE ORO</div>
+        <p>Si un dato lo tiene que ver más de un jugador (ranking, dinero), va en el <b>servidor</b>. Si es solo para el jugador (su mira, su botón), va en <b>LocalScript</b>.</p>
+      </div>
+
+      <h3>1.4 Tu primer "Hola, mundo"</h3>
+      <ul>
+        <li>Abrí Roblox Studio y elegí "Baseplate".</li>
+        <li>Insertá un Part (botón Part en el toolbar).</li>
+        <li>En Properties cambiale el Color y poné <code>Material = Neon</code>.</li>
+        <li>Andá a Lighting y poné <code>Technology = Future</code>. Agregá <code>Atmosphere</code> y <code>Bloom</code>.</li>
+        <li>Click derecho en <code>ServerScriptService</code> → Insert Object → Script. Adentro escribí:</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">print("¡Hola, mundo!")</code></pre>
+      </div>
+      <p>Apretá <code>F5</code> (Play). En Output va a aparecer tu mensaje. <b>Felicitaciones — ya tenés un mundo.</b></p>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn disabled"><span class="lbl">← ANTERIOR</span><span class="nm">—</span></a>
+      <a class="ch-nav-btn next" href="#cap-02"><span class="lbl">SIGUIENTE →</span><span class="nm">Filosofía</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-02">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 02</div>
+      <h2 class="ch-title">LA <span class="acc">FILOSOFÍA</span><br>¿POR QUÉ ALGUNOS<br>MUNDOS PEGAN?</h2>
+      <p class="ch-intro">Antes de hacer un cubo, pensá en esto: la gente no juega tu juego porque sea "lindo". Lo juega porque les hace sentir algo.</p>
+    </div>
+    <div class="ch-body">
+      <h3>2.1 Las 4 emociones que venden en Roblox</h3>
+      <ul>
+        <li><b>Adopt Me</b> → cariño, cuidar mascotas, decorar tu casa.</li>
+        <li><b>Blox Fruits</b> → poder, te hacés más fuerte cada minuto.</li>
+        <li><b>Brookhaven</b> → libertad, podés ser quien quieras.</li>
+        <li><b>Lucky Block / Brainrot</b> → sorpresa, no sabés qué va a salir.</li>
+        <li><b>Tower of Hell</b> → orgullo, "lo logré yo solo".</li>
+      </ul>
+
+      <h3>2.2 La regla de los 30 segundos</h3>
+      <p>Tenés 30 segundos para enganchar al jugador. Si en ese tiempo no pasa algo divertido, se va. Esto está estudiado: en Roblox, <b>el 25-40% de los nuevos jugadores no vuelve al día siguiente</b>.</p>
+
+      <div class="callout">
+        <div class="callout-tag">📊 DATO REAL</div>
+        <p>Los juegos top de Roblox tienen sesiones de <b>12 a 30 minutos</b>. Los flojos, menos de 4. ¿Diferencia? El primer minuto.</p>
+      </div>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ CITA</div>
+        <p>Antes de poner el primer cubo, escribí en un papel: ¿qué va a sentir mi jugador en los primeros 30 segundos? Si no podés contestar eso, no construyas nada todavía.</p>
+      </div>
+
+      <h3>2.3 El círculo del juego (Core Loop)</h3>
+      <div class="ascii-box">  ACCIÓN ──→ PREMIO ──→ PROGRESO ──→ META
+    ↑                                  │
+    └──────────────────────────────────┘
+              (se repite)</div>
+      <p>Todo juego que enganche tiene un círculo: el jugador hace una acción, recibe un premio, eso lo lleva a una meta más grande, lo que lo motiva a hacer la acción de nuevo. Y otra vez. Y otra.</p>
+      <p><b>Ejemplo en Adopt Me:</b> dar de comer a la mascota → la mascota crece → desbloqueás nuevas mascotas → querés alimentarlas también.</p>
+
+      <h3>2.4 La regla del "una cosa más"</h3>
+      <p>Cuando el jugador esté por irse, debe pensar: <b>"uy, una partidita más y listo"</b>. Para eso:</p>
+      <ul>
+        <li>Hacé que la próxima recompensa esté <b>CERCA</b> (barra al 80%).</li>
+        <li>Mostrá un timer: "tu cofre estará listo en 4:32".</li>
+        <li><b>Daily reward</b> — si vuelve mañana, gana algo lindo.</li>
+      </ul>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-01"><span class="lbl">← ANTERIOR</span><span class="nm">Anatomía</span></a>
+      <a class="ch-nav-btn next" href="#cap-03"><span class="lbl">SIGUIENTE →</span><span class="nm">Construir</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-03">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 03</div>
+      <h2 class="ch-title"><span class="acc">CONSTRUIR</span>:<br>CUBOS, MODELOS,<br>TERRENO</h2>
+      <p class="ch-intro">El 70% del tiempo en Studio es construir. Vamos a hacerlo bien desde el principio.</p>
+    </div>
+    <div class="ch-body">
+      <h3>3.1 Parts: los ladrillos</h3>
+      <p>Un Part es un cubo. Y todo el universo de Roblox está hecho de cubos. En serio.</p>
+      <ul>
+        <li><b>Block</b> — el cubo normal.</li>
+        <li><b>Sphere</b> — pelota.</li>
+        <li><b>Cylinder</b> — tubo.</li>
+        <li><b>Wedge</b> — rampa, mitad de un cubo cortado.</li>
+        <li><b>MeshPart</b> — modelo 3D que importás de Blender.</li>
+      </ul>
+
+      <h3>3.2 Las propiedades que importan</h3>
+      <table class="props-table">
+        <thead><tr><th>Propiedad</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td>Anchored</td><td>Si está en true, no se mueve. Activala SIEMPRE en lo que no se debe caer.</td></tr>
+          <tr><td>CanCollide</td><td>Si es false, los jugadores lo atraviesan. Útil para invisibles.</td></tr>
+          <tr><td>Material</td><td>Madera, metal, neón, hierba. El neón brilla — úsalo bien.</td></tr>
+          <tr><td>Transparency</td><td>0 = sólido. 1 = invisible. 0.5 = vidrio.</td></tr>
+          <tr><td>Color</td><td>El color. Roblox tiene una paleta hermosa.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn">
+        <div class="callout-tag">⚠ ERROR DE NOVATO</div>
+        <p>Olvidarse de <code>Anchored</code> en piezas de decoración. <b>El piso entero se cae cuando alguien lo toca</b>.</p>
+      </div>
+
+      <h3>3.3 Models: agrupar cosas</h3>
+      <p>Un <b>Model</b> es una carpeta que junta muchas Parts. Tu casa entera puede ser un Model: paredes, techo, ventanas, todo dentro. Después la podés mover, copiar, vender en el toolbox.</p>
+      <p><b>PrimaryPart:</b> una de las Parts del Model que es la "principal". Cuando movés el Model con código, todo se mueve con respecto a la PrimaryPart.</p>
+
+      <h3>3.4 Terreno: montañas y agua</h3>
+      <p>Apretá "Terrain Editor" en la pestaña Home. Ahí podés:</p>
+      <ul>
+        <li><b>Generate</b> — crear paisajes enteros automáticos (montañas, agua, arena).</li>
+        <li><b>Sculpt</b> — pintar terreno con un pincel.</li>
+        <li><b>Paint</b> — cambiar el material (pasto, piedra, nieve).</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 TRUCO</div>
+        <p>El agua en el terreno es interactiva — los jugadores nadan automáticamente. Pero pesa. Si tu juego se traba, sacá el agua o usá Parts transparentes con script.</p>
+      </div>
+
+      <h3>3.5 Optimización mientras construís</h3>
+      <ul>
+        <li>NO uses 1000 Parts pequeñas. Usá <b>MeshParts o Unions</b> cuando puedas.</li>
+        <li>Activá <code>StreamingEnabled</code> en Workspace — Roblox carga solo lo que está cerca del jugador.</li>
+        <li>Borrá lo que no se ve. Si hay un cubo dentro de una pared, igual cuenta.</li>
+      </ul>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-02"><span class="lbl">← ANTERIOR</span><span class="nm">Filosofía</span></a>
+      <a class="ch-nav-btn next" href="#cap-04"><span class="lbl">SIGUIENTE →</span><span class="nm">Iluminación</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-04">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 04</div>
+      <h2 class="ch-title"><span class="acc">ILUMINACIÓN</span>,<br>ATMÓSFERA, FX</h2>
+      <p class="ch-intro">La diferencia entre un juego que parece "de aficionado" y uno profesional es la luz. Ni el modelado. La luz.</p>
+    </div>
+    <div class="ch-body">
+      <h3>4.1 Las 4 tecnologías de luz</h3>
+      <p>Andá a Lighting → propiedad <code>Technology</code>:</p>
+      <table class="props-table">
+        <tbody>
+          <tr><td>Voxel</td><td>Vieja, rápida, sombras feas. Solo si tu juego va a teléfonos viejos.</td></tr>
+          <tr><td>ShadowMap</td><td>Equilibrio. Buena calidad, anda en todo. <b>Recomendada por defecto.</b></td></tr>
+          <tr><td>Future</td><td>La mejor. Iluminación realista, pero pesa. Usala para PC.</td></tr>
+          <tr><td>Unified</td><td>La nueva (2026). Reflejos en agua, path tracing. Beta.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.2 Atmosphere: el aire que se ve</h3>
+      <p>Insertá un <code>Atmosphere</code> dentro de Lighting. Te da niebla, nubes, hasta un poquito de "polvo en el aire" que hace que todo se vea de película.</p>
+      <ul>
+        <li><b>Density</b> — qué tan densa es la niebla (0.3 está bien para un día normal).</li>
+        <li><b>Color</b> — el tono del aire. Azulado para frío, naranja para atardecer.</li>
+        <li><b>Glare</b> — brillo del sol.</li>
+      </ul>
+
+      <h3>4.3 Post-procesos: la guinda de la torta</h3>
+      <p>Estos son efectos que se aplican DESPUÉS del render. Insertá dentro de Lighting:</p>
+      <ul>
+        <li><b>Bloom</b> — las luces brillan más. Casi todo juego top tiene Bloom.</li>
+        <li><b>ColorCorrection</b> — cambia el tono general (más cálido, más oscuro, más saturado).</li>
+        <li><b>SunRays</b> — rayos de sol cinematográficos.</li>
+        <li><b>DepthOfField</b> — desenfoque de cámara, lo lejos se ve borroso.</li>
+        <li><b>Blur</b> — todo borroso (úsalo solo en menús).</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 TRUCO PROFESIONAL</div>
+        <p><code>ColorCorrection</code> con <code>Saturation = 0.1</code> hace que tu mundo se vea más "premium". Probalo.</p>
+      </div>
+
+      <h3>4.4 PointLight, SpotLight, SurfaceLight</h3>
+      <p>Para luces locales (lámparas, antorchas, neones):</p>
+      <ul>
+        <li><b>PointLight</b> — esfera de luz que tira para todos lados. Como un foco de cuarto.</li>
+        <li><b>SpotLight</b> — cono de luz, apunta a un lado. Como linterna.</li>
+        <li><b>SurfaceLight</b> — toda la cara de un Part emite luz. Pantallas, neones de cartelería.</li>
+      </ul>
+      <p><b>Brightness</b> 2-3 es bueno para lámparas. <b>Range</b> 16-25 alcanza un cuarto. Más de eso pesa mucho.</p>
+
+      <h3>4.5 Skybox: el cielo</h3>
+      <p>Insertá <code>Sky</code> en Lighting. Roblox tiene cielos default, pero podés subir 6 imágenes (top, bottom, 4 lados) para tener tu propio cielo. En el Toolbox hay miles gratis.</p>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-03"><span class="lbl">← ANTERIOR</span><span class="nm">Construir</span></a>
+      <a class="ch-nav-btn next" href="#cap-05"><span class="lbl">SIGUIENTE →</span><span class="nm">Programar</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-05">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 05</div>
+      <h2 class="ch-title">PROGRAMAR<br>CON <span class="acc">LUAU</span>:<br>LA MAGIA</h2>
+      <p class="ch-intro">Sin código, tu mundo es una estatua. Con código, cobra vida. Luau es el lenguaje de Roblox — fácil de aprender, parecido a hablar.</p>
+    </div>
+    <div class="ch-body">
+      <h3>5.1 Las variables: cajitas con nombre</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local nombre = "Tomi"
+local edad = 10
+local esGenial = true
+
+print(nombre .. " tiene " .. edad .. " años")</code></pre>
+      </div>
+      <p><code>local</code> hace que la variable solo viva en este script. <code>print()</code> escribe en Output. Las dos puntitos <code>..</code> juntan textos.</p>
+
+      <h3>5.2 If / else: tomar decisiones</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local vida = 50
+
+if vida < 20 then
+    print("¡Cuidado, casi muerto!")
+elseif vida < 60 then
+    print("Estás herido")
+else
+    print("Todo bien")
+end</code></pre>
+      </div>
+
+      <h3>5.3 Eventos: el secreto de Roblox</h3>
+      <p>Casi todo en Roblox son eventos: el jugador entra, toca un cubo, muere, hace clic. Vos te "conectás" a ese evento y respondés.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">-- Cuando un jugador entra al juego
+game.Players.PlayerAdded:Connect(function(player)
+    print(player.Name .. " se unió")
+    local dinero = Instance.new("IntValue", player)
+    dinero.Name = "Coins"
+    dinero.Value = 100
+end)
+
+-- Cuando un cubo es tocado
+local parte = script.Parent
+parte.Touched:Connect(function(otro)
+    local humanoid = otro.Parent:FindFirstChild("Humanoid")
+    if humanoid then
+        local p = game.Players:GetPlayerFromCharacter(otro.Parent)
+        if p then p.Coins.Value += 10 end
+    end
+end)</code></pre>
+      </div>
+
+      <h3>5.4 ModuleScript: un solo lugar para la verdad</h3>
+      <p>ModuleScript guarda funciones o datos comunes. Otros scripts lo usan con <code>require()</code>. Idea: <b>no repitas, no copies</b>. Si tenés que cambiar algo, lo cambiás en un solo lado.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU · Constantes.lua</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local Constantes = {}
+
+Constantes.NivelMax = 100
+Constantes.OroPorMatar = 5
+Constantes.Niveles = {"Bronce", "Plata", "Oro"}
+
+return Constantes
+
+-- En otro script:
+-- local C = require(game.ReplicatedStorage.Shared.Constantes)
+-- print(C.NivelMax)</code></pre>
+      </div>
+
+      <h3>5.5 RemoteEvent: cliente ↔ servidor</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU · Servidor</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local RS = game:GetService("ReplicatedStorage")
+local ev = Instance.new("RemoteEvent", RS)
+ev.Name = "DameMonedas"
+
+ev.OnServerEvent:Connect(function(player, cantidad)
+    if cantidad > 100 then return end
+    player.Coins.Value += cantidad
+end)
+
+-- Cliente (LocalScript):
+-- game.ReplicatedStorage.DameMonedas:FireServer(10)</code></pre>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-tag">⚠ SÚPER IMPORTANTE</div>
+        <p><b>NUNCA confíes en datos del cliente.</b> Siempre validá en el servidor. Si no, los hackers te pueden mandar "DameMonedas, cantidad = 999999" y se van a hacer ricos.</p>
+      </div>
+
+      <h3>5.6 DataStore: guardar el progreso</h3>
+      <p>Sin DataStore, todo lo del jugador se borra cuando se va. Con DataStore, queda guardado para siempre.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local DS = game:GetService("DataStoreService")
+local store = DS:GetDataStore("Monedas_v1")
+
+game.Players.PlayerAdded:Connect(function(p)
+    local ok, datos = pcall(function()
+        return store:GetAsync(p.UserId)
+    end)
+    local v = Instance.new("IntValue", p)
+    v.Name = "Coins"
+    v.Value = (ok and datos) or 0
+end)
+
+game.Players.PlayerRemoving:Connect(function(p)
+    pcall(function() store:SetAsync(p.UserId, p.Coins.Value) end)
+end)</code></pre>
+      </div>
+
+      <h3>5.7 TweenService: animaciones suaves</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local TS = game:GetService("TweenService")
+local info = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+local tween = TS:Create(parte, info, {
+    Position = parte.Position + Vector3.new(0, 10, 0)
+})
+tween:Play()</code></pre>
+      </div>
+      <p>Tween hace que un Part vaya suavecito de A a B en 2 segundos. Sin Tween es brusco, con Tween parece <b>profesional</b>.</p>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-04"><span class="lbl">← ANTERIOR</span><span class="nm">Iluminación</span></a>
+      <a class="ch-nav-btn next" href="#cap-06"><span class="lbl">SIGUIENTE →</span><span class="nm">UI / UX</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-06">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 06</div>
+      <h2 class="ch-title">UI / UX:<br>LA <span class="acc">CARA</span><br>DE TU JUEGO</h2>
+      <p class="ch-intro">UI son los botones, contadores, menús. UX es cómo se siente usarlos. Si tu UI confunde, perdiste al jugador.</p>
+    </div>
+    <div class="ch-body">
+      <h3>6.1 Las 3 reglas de oro</h3>
+      <ul>
+        <li><b>Una pantalla, una decisión.</b> No metas 20 botones. Mostrale al jugador SOLO lo que tiene que decidir ahora.</li>
+        <li><b>Lee como un libro.</b> Lo importante arriba a la izquierda. Lo secundario abajo o a la derecha.</li>
+        <li><b>Botón grande = acción importante.</b> El botón "Jugar" tiene que ser el más grande y colorido.</li>
+      </ul>
+
+      <h3>6.2 Componentes básicos</h3>
+      <ul>
+        <li><b>ScreenGui</b> — la "pantalla" entera donde van los elementos.</li>
+        <li><b>Frame</b> — un rectángulo donde poner cosas adentro.</li>
+        <li><b>TextButton</b> — botón con texto.</li>
+        <li><b>ImageLabel</b> — imagen.</li>
+        <li><b>TextLabel</b> — texto sin botón.</li>
+        <li><b>UIGradient, UICorner, UIStroke</b> — efectos visuales.</li>
+      </ul>
+
+      <h3>6.3 El secreto del UDim2</h3>
+      <p>Las posiciones en UI usan <code>UDim2.new(escalaX, offsetX, escalaY, offsetY)</code>:</p>
+      <ul>
+        <li><b>Escala</b> = 0 a 1, relativo a la pantalla. 0.5 = la mitad.</li>
+        <li><b>Offset</b> = píxeles fijos.</li>
+      </ul>
+      <p><b>Ejemplo:</b> <code>UDim2.new(0.5, 0, 0.5, 0)</code> con AnchorPoint (0.5, 0.5) = botón en el medio exacto, no importa el tamaño de la pantalla.</p>
+
+      <div class="callout warn">
+        <div class="callout-tag">⚠ ERROR COMÚN</div>
+        <p>Usar solo offsets (píxeles). Tu juego se va a ver bien en compu, pero feo en celular. <b>SIEMPRE usá escala + AnchorPoint.</b></p>
+      </div>
+
+      <h3>6.4 Mobile-first</h3>
+      <p>El <b>50%+ de los jugadores de Roblox usa celular</b>. Tu UI tiene que funcionar con dedos gordos en pantallas chiquitas:</p>
+      <ul>
+        <li>Botones de mínimo <b>60×60 píxeles</b>.</li>
+        <li>No pongas más de <b>4 botones</b> en pantalla a la vez.</li>
+        <li>Probá en Studio con la opción "Device" → iPhone, Galaxy.</li>
+      </ul>
+
+      <h3>6.5 Feedback: el jugador tiene que sentir cada clic</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local btn = script.Parent
+
+btn.MouseEnter:Connect(function()
+    btn.BackgroundColor3 = Color3.fromRGB(255, 200, 100)
+end)
+
+btn.MouseLeave:Connect(function()
+    btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+end)</code></pre>
+      </div>
+      <p>Cada botón cuando lo apretan: <b>cambia color, hace un sonidito, vibra un poquito</b>. Sin feedback, el juego se siente "muerto".</p>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-05"><span class="lbl">← ANTERIOR</span><span class="nm">Programar</span></a>
+      <a class="ch-nav-btn next" href="#cap-07"><span class="lbl">SIGUIENTE →</span><span class="nm">Performance</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-07">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 07</div>
+      <h2 class="ch-title"><span class="acc">PERFORMANCE</span>:<br>QUE NO SE TRABE</h2>
+      <p class="ch-intro">Tu juego puede ser una obra de arte, pero si va a 10 FPS nadie se queda. La fluidez vale más que los gráficos.</p>
+    </div>
+    <div class="ch-body">
+      <h3>7.1 Las métricas que importan</h3>
+      <ul>
+        <li><b>FPS</b> — frames por segundo. Mínimo 30 en celular, 60 en PC. Por debajo de 20 = muerte.</li>
+        <li><b>Memory</b> — cuánta RAM usa. Pasarse de 1 GB en celular = crashes.</li>
+        <li><b>Ping</b> — milisegundos entre cliente y servidor. Menos de 100 ms es bueno.</li>
+      </ul>
+      <p>En Studio: <code>View → Stats</code>. O en juego: <code>Ctrl + Shift + F3</code>.</p>
+
+      <h3>7.2 Los enemigos del FPS</h3>
+      <ul>
+        <li><b>Demasiadas Parts.</b> Cada Part cuesta. Combiná con Union, MeshPart.</li>
+        <li><b>Triggers que se ejecutan a cada rato.</b> Touched dentro de un loop = desastre.</li>
+        <li><b>Luces dinámicas con sombras.</b> Limita a 5-10 por escena.</li>
+        <li><b>Texturas pesadas.</b> Bajalas a 256×256 si no son protagonistas.</li>
+        <li><b>Partículas exageradas.</b> Un humo bonito puede tirar 30 FPS al piso.</li>
+      </ul>
+
+      <h3>7.3 StreamingEnabled: tu mejor amigo</h3>
+      <p>En Workspace, propiedad <code>StreamingEnabled = true</code>. Roblox solo carga lo que está cerca del jugador. Tu juego puede ser GIGANTE y aún así andar bien en celular.</p>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 TRUCO</div>
+        <p>Activá <code>StreamingEnabled</code> desde el primer día. Cambiar después es DOLOROSO porque tus scripts pueden romperse.</p>
+      </div>
+
+      <h3>7.4 LOD: nivel de detalle</h3>
+      <p>MeshPart tiene <code>RenderFidelity</code>. Ponelo en <code>Automatic</code> — Roblox baja la calidad de los modelos lejanos. Lo cercano se ve hermoso, lo lejano se ve simple. El jugador no nota la diferencia.</p>
+
+      <h3>7.5 Profileá antes de optimizar</h3>
+      <p>No "optimices" cosas al azar. Usá el <b>MicroProfiler</b> (<code>Ctrl+F6</code> en Studio). Te dice qué función de tu código consume más tiempo. Atacá esa primero.</p>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ PRINCIPIO</div>
+        <p>Optimización prematura = perdés tiempo arreglando lo que no estaba roto. Primero hacé el juego, después medí, después optimizá lo que está mal.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-06"><span class="lbl">← ANTERIOR</span><span class="nm">UI / UX</span></a>
+      <a class="ch-nav-btn next" href="#cap-08"><span class="lbl">SIGUIENTE →</span><span class="nm">FTUE</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-08">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 08</div>
+      <h2 class="ch-title">FTUE,<br>CORE LOOP,<br><span class="acc">RETENCIÓN</span></h2>
+      <p class="ch-intro">FTUE (First Time User Experience) = los primeros 60 segundos del jugador nuevo. Es lo MÁS importante de todo el juego.</p>
+    </div>
+    <div class="ch-body">
+      <div class="ascii-box">100 jugadores hacen clic en "Jugar"
+         ↓
+ 75 pasan el tutorial
+         ↓
+ 45 juegan más de 5 minutos
+         ↓
+ 22 vuelven al día siguiente</div>
+      <p><i>El embudo: cada paso pierde gente. Tu trabajo es tapar agujeros.</i></p>
+
+      <h3>8.1 Métricas obligatorias</h3>
+      <ul>
+        <li><b>D1 retention</b> — % de jugadores que vuelven al día siguiente. Buena: 15-25%. Top: 40%+.</li>
+        <li><b>D7 / D30</b> — los que vuelven a la semana / al mes.</li>
+        <li><b>Avg Session Time</b> — duración promedio. Algoritmo Roblox ama 8+ minutos.</li>
+        <li><b>New Player First Session Retention</b> — en qué minuto se van los nuevos.</li>
+        <li><b>Player Funnel</b> — embudo dividido por pasos del onboarding.</li>
+      </ul>
+
+      <h3>8.2 Las 6 reglas del FTUE</h3>
+      <ul>
+        <li><b>No le muestres pared de texto.</b> Enseñá con ACCIÓN. Flecha en el piso, botón resaltado.</li>
+        <li><b>Primer premio en 30 segundos.</b> Una moneda, un objeto, lo que sea — pero ya.</li>
+        <li><b>No bloquees curiosidad.</b> El tutorial debe guiar, no obligar.</li>
+        <li><b>Mostrá meta de largo plazo.</b> Barra de progreso "10/100 niveles".</li>
+        <li><b>Wow-moment.</b> Algo cinemático en los primeros 60 segundos.</li>
+        <li><b>Daily reward.</b> Si vuelve mañana, gana algo lindo gratis.</li>
+      </ul>
+
+      <h3>8.3 Tests A/B con Experiments</h3>
+      <p>Roblox tiene una herramienta llamada <b>Experiments</b> en Creator Hub. Probá dos versiones del onboarding al mismo tiempo en grupos diferentes de jugadores. Mirá cuál tiene mejor D1. Quedate con la ganadora.</p>
+
+      <h3>8.4 Hooks de retención</h3>
+      <ul>
+        <li><b>Daily login bonus</b> — vuelve cada día = premio mayor.</li>
+        <li><b>Quests diarias</b> — 3 misiones simples, se reinician cada 24 hs.</li>
+        <li><b>Misiones semanales</b> — más grandes, premio más fuerte.</li>
+        <li><b>Eventos limitados</b> — Halloween, Navidad, Año Nuevo. La gente vuelve.</li>
+        <li><b>Notificaciones de Roblox</b> — ofrecé "Favorite" y "Follow" desde el primer minuto.</li>
+      </ul>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ FILOSOFÍA</div>
+        <p>Las recompensas + animaciones + efectos crean un sentimiento. Terminá el onboarding con un momento de alegría: el jugador sale con ganas de volver.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-07"><span class="lbl">← ANTERIOR</span><span class="nm">Performance</span></a>
+      <a class="ch-nav-btn next" href="#cap-09"><span class="lbl">SIGUIENTE →</span><span class="nm">Monetización</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-09">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 09</div>
+      <h2 class="ch-title"><span class="acc">MONETIZACIÓN</span>:<br>GANAR ROBUX</h2>
+      <p class="ch-intro">Si tu juego es divertido, la gente paga. La pirámide de monetización en Roblox tiene 4 niveles, todos importantes.</p>
+    </div>
+    <div class="ch-body">
+      <h3>9.1 Game Pass (compra única)</h3>
+      <p>Es como un "perk" que el jugador compra UNA vez y queda para siempre. Ejemplos: <b>"VIP", "Doble dinero", "Volar"</b>. Precios típicos: 99-499 Robux para empezar.</p>
+      <p>Se crean en <code>Creator Hub → Tu juego → Monetization → Game Passes</code>.</p>
+
+      <h3>9.2 Developer Products (compras repetidas)</h3>
+      <p>Lo que el jugador compra MUCHAS veces: monedas, gemas, packs de ítems, "skip" de timer. Estos generan <b>más plata a la larga</b> porque el mismo jugador puede comprar 100 veces.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">▶ LUAU</span><button class="code-copy">COPIAR</button></div>
+        <pre><code data-lang="lua">local MPS = game:GetService("MarketplaceService")
+
+MPS.ProcessReceipt = function(info)
+    local p = game.Players:GetPlayerByUserId(info.PlayerId)
+    if info.ProductId == 123456789 then
+        p.Coins.Value += 1000
+    end
+    return Enum.ProductPurchaseDecision.PurchaseGranted
+end</code></pre>
+      </div>
+
+      <h3>9.3 Premium Payouts</h3>
+      <p>Los jugadores con suscripción <b>Premium</b> gastan tiempo en tu juego, y Roblox te paga POR HORA jugada. No tenés que hacer nada — solo subir métricas. <b>Cuanto más tiempo se queden los Premium, más cobras.</b></p>
+
+      <h3>9.4 UGC (User Generated Content)</h3>
+      <p>Si sos creador aprobado, podés vender ítems para avatar (sombreros, accesorios) en el Marketplace. Roblox cobra una comisión.</p>
+
+      <h3>9.5 La regla del balance</h3>
+      <ul>
+        <li><b>NO uses pay-to-win.</b> Que el que paga tenga ventaja FUERTE pero no infinita. Si el que no paga no puede competir, se va.</li>
+        <li><b>Skins, no poder.</b> Vendé cosas estéticas siempre que puedas — los chicos las aman.</li>
+        <li><b>FOMO con cuidado.</b> Eventos limitados sí, pero no estafes.</li>
+        <li><b>First Purchase Bonus.</b> Al primer pago, daile MÁS que el segundo. Romper la barrera del primer pago es lo más difícil.</li>
+      </ul>
+
+      <h3>9.6 Robux a dólares</h3>
+      <p>Roblox se queda con el 30%. El otro 70% es tuyo, y lo podés sacar como dinero real con <b>DevEx</b> (Developer Exchange) si tenés Premium y juntás <b>30,000 Robux</b> mínimo.</p>
+
+      <div class="callout">
+        <div class="callout-tag">📊 REALIDAD</div>
+        <p>El top 1% de juegos en Roblox factura millones por año. La mayoría no factura nada. La diferencia: <b>retención + un Game Pass que la gente realmente quiera</b>.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-08"><span class="lbl">← ANTERIOR</span><span class="nm">FTUE</span></a>
+      <a class="ch-nav-btn next" href="#cap-10"><span class="lbl">SIGUIENTE →</span><span class="nm">Marketing</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-10">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 10</div>
+      <h2 class="ch-title"><span class="acc">MARKETING</span>:<br>CÓMO TE<br>ENCUENTRAN</h2>
+      <p class="ch-intro">Tu juego puede ser increíble, pero si nadie lo ve, no existe. El marketing en Roblox es 80% el algoritmo + 20% redes.</p>
+    </div>
+    <div class="ch-body">
+      <h3>10.1 El algoritmo de Roblox</h3>
+      <ul>
+        <li><b>Average session time</b> — cuánto se quedan. <b>Lo más importante.</b></li>
+        <li><b>D1 retention</b> — vuelven mañana.</li>
+        <li><b>CTR del ícono</b> — qué porcentaje hace clic en tu ícono.</li>
+        <li><b>Likes / dislikes ratio.</b></li>
+        <li><b>Crecimiento DAU.</b></li>
+      </ul>
+
+      <h3>10.2 El ícono: tu cartelera</h3>
+      <p>El ícono (512×512) es lo PRIMERO que la gente ve. Si no hace clic, el resto no importa.</p>
+      <ul>
+        <li><b>Una cara con emoción.</b> Sorpresa, miedo, felicidad. Las caras venden.</li>
+        <li><b>Colores fuertes.</b> Azul + naranja, rosa + amarillo. Saturado.</li>
+        <li><b>Texto MÍNIMO o ninguno.</b> En el celular no se lee.</li>
+        <li><b>Un solo elemento principal.</b> No metas 5 cosas.</li>
+      </ul>
+
+      <h3>10.3 Thumbnails: el trailer</h3>
+      <p>3-5 thumbnails de 1920×1080. Mostrá:</p>
+      <ul>
+        <li>El "wow-moment" del juego.</li>
+        <li>Los premios principales (skins, mascotas, vehículos).</li>
+        <li>El gameplay en acción.</li>
+        <li>Algo que cause curiosidad ("¿qué hay detrás de esa puerta?").</li>
+        <li>UGC u objetos que se pueden ganar.</li>
+      </ul>
+
+      <h3>10.4 Título y descripción</h3>
+      <ul>
+        <li>Título <b>&lt; 50 caracteres</b>, con palabra clave de género ("Tycoon", "Obby", "Simulator", "RP").</li>
+        <li>Descripción con emojis, bullets cortos, "How to play" claro, novedades del último update arriba.</li>
+        <li><b>Tags correctos</b> — Roblox los usa para mostrarte a la gente correcta.</li>
+      </ul>
+
+      <h3>10.5 Soft launch + crecimiento</h3>
+      <ul>
+        <li><b>Beta cerrada</b> con 20-50 amigos / Discord. Conseguí likes y revisás bugs.</li>
+        <li><b>Soft launch</b> — abrí el juego pero sin promocionar. Mirá las métricas.</li>
+        <li><b>Iteración</b> — basado en lo que viste, mejorá.</li>
+        <li><b>Lanzamiento</b> con campaña: TikTok, YouTube Shorts, anuncios de Roblox, Sponsored Ads.</li>
+        <li><b>Updates regulares.</b> El algoritmo premia juegos que se actualizan.</li>
+      </ul>
+
+      <h3>10.6 TikTok / YouTube Shorts</h3>
+      <p>Hoy los chicos descubren juegos por TikTok y Shorts más que por Roblox mismo. Hacé videos cortos (15-30 seg) mostrando el wow-moment. <b>Si uno se viraliza, miles de jugadores entran en horas.</b></p>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 HACK PROFESIONAL</div>
+        <p>Contactá creadores de YouTube/TikTok medianos (10K-100K subs) y mandales acceso VIP de tu juego. Si les gusta, hacen un video <b>gratis</b>.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-09"><span class="lbl">← ANTERIOR</span><span class="nm">Monetización</span></a>
+      <a class="ch-nav-btn next" href="#cap-11"><span class="lbl">SIGUIENTE →</span><span class="nm">Tendencias</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-11">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 11</div>
+      <h2 class="ch-title"><span class="acc">TENDENCIAS</span><br>2026</h2>
+      <p class="ch-intro">Lo que está prendiendo fuego en Roblox ahora mismo. Si no estás al día, vas atrás.</p>
+    </div>
+    <div class="ch-body">
+      <h3>Top juegos por jugadores en línea</h3>
+      <div class="bars">
+        <div class="bar" style="height:97%;animation-delay:0ms"><span class="v">488K</span><span class="l">Adopt Me</span></div>
+        <div class="bar" style="height:97%;animation-delay:100ms;background:linear-gradient(180deg,var(--purple),#5e2db5)"><span class="v">485K</span><span class="l">Blox Fruits</span></div>
+        <div class="bar" style="height:90%;animation-delay:200ms;background:linear-gradient(180deg,#00aaff,#005a8a)"><span class="v">450K</span><span class="l">Brookhaven</span></div>
+        <div class="bar" style="height:72%;animation-delay:300ms;background:linear-gradient(180deg,var(--toxic),#1a8800)"><span class="v">362K</span><span class="l">RIVALS</span></div>
+        <div class="bar" style="height:21%;animation-delay:400ms;background:linear-gradient(180deg,var(--gold),#aa6800)"><span class="v">105K</span><span class="l">Lucky Block</span></div>
+        <div class="bar" style="height:11%;animation-delay:500ms;background:linear-gradient(180deg,#ff66cc,#bb3399)"><span class="v">56K</span><span class="l">Brainrot</span></div>
+      </div>
+
+      <h3>11.1 Datos de la plataforma</h3>
+      <div class="pills">
+        <div class="pill"><div class="v">129M</div><div class="l">Jugadores únicos por día (DAU)</div></div>
+        <div class="pill"><div class="v">2.4 hs</div><div class="l">Tiempo promedio por sesión</div></div>
+        <div class="pill"><div class="v">25-30M</div><div class="l">MAU LATAM + España</div></div>
+        <div class="pill"><div class="v">70M+</div><div class="l">Creadores activos en Studio</div></div>
+        <div class="pill"><div class="v">$3B+</div><div class="l">Facturación anual</div></div>
+        <div class="pill"><div class="v">50%+</div><div class="l">Juegan desde celular</div></div>
+      </div>
+
+      <h3>11.2 Brainrot games — la ola del 2025-2026</h3>
+      <p><i>Be a Lucky Block</i> con 105K en línea. <i>Be a Brainrot</i> con 56K. Memes de Italia (Tralalero Tralala, Tung Tung Sahur) hechos juego. La fórmula:</p>
+      <ul>
+        <li>Personajes meme absurdos.</li>
+        <li>Mecánica de "robar / coleccionar".</li>
+        <li>Apuesta visual fuerte (efectos, números grandes en pantalla).</li>
+        <li>Loop super simple.</li>
+      </ul>
+
+      <h3>11.3 Roleplay: el género gigante</h3>
+      <p><b>Brookhaven RP:</b> 450K en línea. <b>Adopt Me:</b> 488K. Lo que la gente busca:</p>
+      <ul>
+        <li>Quieren <b>SER alguien</b> (mamá, doctor, gamer, criminal).</li>
+        <li>Mucha personalización (casas, ropa, autos, mascotas).</li>
+        <li>Eventos sociales (bodas, fiestas, peleas).</li>
+        <li>Voicechat saca el RP a otro nivel.</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-tag">💡 OPORTUNIDAD PARA VOS</div>
+        <p>¡Vivís en Buenos Aires! Un Roleplay con <b>onda argentina o latina</b> (barrios reconocibles, jergas, comidas) NO existe todavía a gran escala. Mercado abierto.</p>
+      </div>
+
+      <h3>11.4 Anime / Battle / Sword</h3>
+      <p><b>Blox Fruits:</b> 485K en línea. Anime Adventures, Sword Fighting, King Legacy. Fórmula:</p>
+      <ul>
+        <li>Combate satisfactorio (animaciones, efectos).</li>
+        <li>Power up sin techo (siempre hay un nivel más).</li>
+        <li>Trade entre jugadores (economía social).</li>
+        <li>Estética anime/japonesa.</li>
+      </ul>
+
+      <h3>11.5 El mercado hispanohablante</h3>
+      <ul>
+        <li><b>México:</b> 8-12M MAU. La base hispanohablante más grande.</li>
+        <li><b>España:</b> 5-7M MAU.</li>
+        <li><b>Argentina:</b> 3-5M MAU. Muy activo en Discord y YouTube.</li>
+      </ul>
+      <p>Si hablás español en tu juego (NPCs, UI, descripción), <b>tenés ventaja sobre el 90% de competencia anglo</b>.</p>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-10"><span class="lbl">← ANTERIOR</span><span class="nm">Marketing</span></a>
+      <a class="ch-nav-btn next" href="#cap-12"><span class="lbl">SIGUIENTE →</span><span class="nm">Lecciones</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-12">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 12</div>
+      <h2 class="ch-title">LO QUE OJALÁ<br><span class="acc">HUBIERA SABIDO</span><br>CUANDO EMPECÉ</h2>
+      <p class="ch-intro">Después de 10 años haciendo juegos en Roblox, esto es lo que me hubiera gustado que me dijeran el primer día.</p>
+    </div>
+    <div class="ch-body">
+      <h3>12.1 Tu primer juego va a ser malo. Lanzalo igual.</h3>
+      <p>Va a tener 3 jugadores (vos y dos amigos). Bugs por todos lados. Vas a sufrir. <b>Pero el segundo juego va a ser DIEZ veces mejor</b>, porque aprendiste con el primero. Empezar es ganar.</p>
+
+      <h3>12.2 No empieces con un MMO</h3>
+      <p>"Mi primer juego va a ser un mundo abierto con magia, mazmorras y 100 jugadores en simultáneo". <b>NO.</b> Empezá con un Obby. Después un Tycoon. Después un Simulator. <b>Subí escaleras chicas.</b></p>
+
+      <h3>12.3 Anclá todo lo que no se debería caer</h3>
+      <p><code>Anchored = true</code>. Esto te va a evitar 10 horas de debug en tu primer juego. Si el piso no se mueve, ANCLALO.</p>
+
+      <h3>12.4 Aprendé Git desde temprano</h3>
+      <p>Sí, Roblox tiene autosave. Pero si rompés algo serio, no podés volver. Usá <b>Rojo + Git</b>: tu código en GitHub. Cada cambio guardado. Podés volver a cualquier versión.</p>
+
+      <h3>12.5 NO confíes en el cliente</h3>
+      <p>Un LocalScript se puede hackear. Cualquier valor que el cliente le mande al servidor, validalo. Si un jugador dice "compré algo por 0 monedas", revisalo en el servidor.</p>
+
+      <h3>12.6 El feedback temprano vale ORO</h3>
+      <p>Mostrale el juego a 5 amigos antes de subirlo. <b>Veelos jugar SIN ayudarlos.</b> Lo que les confunda, los confunde a 1000 personas también. Los primeros usuarios pasivos te muestran tus puntos ciegos.</p>
+
+      <h3>12.7 Tu nombre y tu marca importan</h3>
+      <p>Elegí un username y nombre de grupo en serio desde el principio. Cambiarlo después es caro y perdés engagement.</p>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ FILOSOFÍA</div>
+        <p>Hacé el juego más simple posible. Lanzalo. Vas a aprender más en una semana con jugadores reales que en seis meses planificando solo.</p>
+      </div>
+
+      <h3>12.8 Las analíticas valen más que las opiniones</h3>
+      <p>Tus amigos van a decir "tu juego está re bueno". Los datos van a decir "el 80% se va en el minuto 2". <b>Confía en los datos.</b></p>
+
+      <h3>12.9 Hacé networking</h3>
+      <p>Entrá a Discord servers de devs (DevForum, comunidades hispanas), DevForum de Roblox, hackathons. <b>Una recomendación de un dev grande puede traerte 1000 jugadores el día 1.</b></p>
+
+      <h3>12.10 Cuidá tu cabeza</h3>
+      <p>Hacer juegos es un maratón. Burnout es real. Tomate al menos 1 día de descanso a la semana. No leas haters en los comentarios. <b>El juego es tu proyecto, no tu identidad.</b> Si algo no funciona, es una lección, no una sentencia.</p>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ EL SECRETO</div>
+        <p>Lo que separa a los que llegan de los que no es la constancia. Cinco años de mejorar 1% por semana = milagro. Y muchos lo hacen.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-11"><span class="lbl">← ANTERIOR</span><span class="nm">Tendencias</span></a>
+      <a class="ch-nav-btn next" href="#cap-13"><span class="lbl">SIGUIENTE →</span><span class="nm">100 Trucos</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-13">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 13</div>
+      <h2 class="ch-title"><span class="acc">100 TRUCOS</span><br>EL EXTRACTO FINAL</h2>
+      <p class="ch-intro">El extracto final. 100 trucos prácticos divididos en 4 partes. Tomá los que necesitás hoy. Volvé al resto cuando los necesites.</p>
+    </div>
+    <div class="ch-body">
+      <p style="text-align:center;font-size:18px">Los 100 trucos los podés explorar interactivamente en la página principal:</p>
+      <div style="text-align:center;margin:30px 0">
+        <a class="hero-cta" href="staticverse.html#tricks">▶ ABRIR LOS 100 TRUCOS</a>
+      </div>
+      <div class="callout">
+        <div class="callout-tag">📚 RESUMEN POR CATEGORÍA</div>
+        <p><b>Trucos 1-25</b> · Studio &amp; Construcción — atajos, plugins, optimización al construir.<br>
+        <b>Trucos 26-50</b> · Scripting &amp; Arquitectura — patrones profesionales, frameworks, anti-bugs.<br>
+        <b>Trucos 51-75</b> · Diseño &amp; UX — psicología del jugador, retención, feedback.<br>
+        <b>Trucos 76-100</b> · Promoción &amp; Crecimiento — algoritmo, marketing, viralidad.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-12"><span class="lbl">← ANTERIOR</span><span class="nm">Lecciones</span></a>
+      <a class="ch-nav-btn next" href="#cap-14"><span class="lbl">SIGUIENTE →</span><span class="nm">Recursos</span></a>
+    </nav>
+  </div>
+</section>
+
+<section class="chapter" id="cap-14">
+  <div class="chapter-inner">
+    <div class="ch-head">
+      <div class="ch-num">CAPÍTULO 14</div>
+      <h2 class="ch-title"><span class="acc">RECURSOS</span><br>EN ESPAÑOL</h2>
+      <p class="ch-intro">Una biblioteca de fuentes en castellano para que sigas aprendiendo.</p>
+    </div>
+    <div class="ch-body">
+      <div class="checklist">
+        <div class="checklist-title">★ CHECKLIST ANTES DE PUBLICAR ★</div>
+        <label><input type="checkbox"><span>Ícono de 512×512 con cara y emoción</span></label>
+        <label><input type="checkbox"><span>3+ thumbnails (1920×1080)</span></label>
+        <label><input type="checkbox"><span>Título &lt; 50 caracteres con palabra clave</span></label>
+        <label><input type="checkbox"><span>Descripción con emojis y bullets</span></label>
+        <label><input type="checkbox"><span>FTUE testeada con 5 amigos</span></label>
+        <label><input type="checkbox"><span>Anti-exploit instalado</span></label>
+        <label><input type="checkbox"><span>DataStore guardando bien</span></label>
+        <label><input type="checkbox"><span>Soft launch en Discord/grupos</span></label>
+      </div>
+
+      <h3>14.1 Documentación oficial (español)</h3>
+      <ul>
+        <li><b>create.roblox.com/docs/es-es</b> — hub oficial: tutoriales, scripting, monetización.</li>
+        <li><code>/docs/es-es/tutorials</code> — tutoriales paso a paso.</li>
+        <li><code>/monetization</code> — Game Pass, Developer Products, DevEx.</li>
+        <li><code>/environment/lighting</code> — iluminación, atmósfera.</li>
+        <li><code>/projects/marketplace</code> — UGC y Toolbox.</li>
+      </ul>
+
+      <h3>14.2 Cursos para chicos</h3>
+      <ul>
+        <li><b>educagamer.com</b> — Roblox Studio para niños.</li>
+        <li><b>bloxters.school</b> — escuela online de Roblox para chicos.</li>
+        <li><b>educacioncontinua.centro.edu.mx</b> — cursos online.</li>
+      </ul>
+
+      <h3>14.3 DevForum (en inglés, pero esencial)</h3>
+      <p>El Roblox DevForum es la comunidad oficial. Está en inglés pero es la mejor fuente del mundo. Usá Google Translate si hace falta — el contenido vale ORO.</p>
+
+      <h3>14.4 Frameworks open source</h3>
+      <ul>
+        <li><b>Knit</b> — github.com/Sleitnick/Knit (estructura para juegos profesionales).</li>
+        <li><b>ProfileService</b> — github.com/MadStudioRoblox/ProfileService (DataStore robusto).</li>
+        <li><b>Promise</b> — github.com/evaera/roblox-lua-promise (async limpio).</li>
+        <li><b>Rojo</b> — rojo.space (sincronización Studio ↔ archivos locales para usar Git).</li>
+      </ul>
+
+      <div class="callout quote">
+        <div class="callout-tag">★ PARA TERMINAR</div>
+        <p>Si cumplís el 30% de lo que hay acá, vas a estar adelante del 95% de los devs de Roblox. Y si te gusta lo que hacés — eso ya es ganar.</p>
+      </div>
+    </div>
+    <nav class="ch-nav">
+      <a class="ch-nav-btn" href="#cap-13"><span class="lbl">← ANTERIOR</span><span class="nm">100 Trucos</span></a>
+      <a class="ch-nav-btn next" href="#final"><span class="lbl">SIGUIENTE →</span><span class="nm">¡Felicitaciones!</span></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ====== FINAL ====== -->
+<section id="final">
+  <div class="final-badge">🏆 ¡LO LOGRASTE!</div>
+  <p class="final-msg">Terminaste la <b>Guía Maestra</b>. 14 capítulos, 100 trucos. Ahora ya sabés más que el 95% de los devs en Roblox.</p>
+  <p class="final-msg" style="font-size:.85em;color:var(--ghost2)"><b>Lo único que falta es lo más importante</b>: sentarse y empezar. Hoy. Aunque sea 15 minutos.</p>
+  <a class="btn-back" href="staticverse.html">▶ VOLVER A STATICVERSE</a>
+  <div class="final-sig">— GUÍA MAESTRA v1.0 · ABRIL 2026 · PARA STATIC</div>
+</section>
+
+<script>
+/* =================== COMET CURSOR =================== */
+(function(){
+  if(window.matchMedia('(hover:none),(pointer:coarse)').matches) return;
+  const cursor = document.getElementById('cursor');
+  if(!cursor) return;
+  let mx = innerWidth/2, my = innerHeight/2;
+  let cx = mx, cy = my;
+  let lastSparkX = mx, lastSparkY = my;
+  let visible = false;
+  document.addEventListener('mousemove', e=>{
+    mx = e.clientX; my = e.clientY;
+    if(!visible){ cursor.style.opacity='1'; visible=true; }
+  }, {passive:true});
+  document.addEventListener('mouseleave', ()=>{ cursor.style.opacity='0'; visible=false; });
+  document.addEventListener('mouseenter', ()=>{ if(visible) cursor.style.opacity='1'; });
+
+  const POOL = 30;
+  const sparkPool = [];
+  for(let i=0;i<POOL;i++){
+    const s = document.createElement('div');
+    s.className='spark';
+    s.style.opacity='0';
+    document.body.appendChild(s);
+    sparkPool.push({el:s,active:false,x:0,y:0,vx:0,vy:0,life:0,maxLife:0,size:6});
+  }
+  function getColor(){
+    if(document.body.classList.contains('cur-link')) return {bg:'#ffb800', glow:'#ffb800'};
+    if(document.body.classList.contains('cur-code')) return {bg:'#39ff14', glow:'#39ff14'};
+    return {bg:'#ff0033', glow:'#ff0033'};
+  }
+  function emit(x,y,opts){
+    const free = sparkPool.find(s=>!s.active);
+    if(!free) return;
+    const c = opts.color || getColor();
+    const size = opts.size || (3+Math.random()*4);
+    free.active=true;free.x=x;free.y=y;
+    free.vx=opts.vx||((Math.random()-.5)*1);
+    free.vy=opts.vy||((Math.random()-.5)*1+.2);
+    free.life=0;free.maxLife=opts.maxLife||(35+Math.random()*20);
+    free.size=size;
+    const el=free.el;
+    el.style.width=size+'px';el.style.height=size+'px';
+    el.style.background=c.bg;
+    el.style.boxShadow=`0 0 ${size*1.5}px ${c.glow}, 0 0 ${size*3}px ${c.glow}`;
+    el.style.opacity='.9';
+    el.style.transform=`translate(${x}px,${y}px)`;
+  }
+  document.addEventListener('mousedown', e=>{
+    const c = getColor();
+    for(let i=0;i<12;i++){
+      const a = (i/12)*Math.PI*2 + Math.random()*.3;
+      const sp = 2+Math.random()*3;
+      emit(e.clientX,e.clientY,{vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,size:4+Math.random()*3,color:c,maxLife:30+Math.random()*15});
+    }
+    const ring = document.createElement('div');
+    ring.className='click-ring';
+    ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';
+    ring.style.borderColor=c.bg;
+    document.body.appendChild(ring);
+    setTimeout(()=>ring.remove(), 600);
+  }, {passive:true});
+  function loop(){
+    cx += (mx-cx)*.65; cy += (my-cy)*.65;
+    cursor.style.transform=`translate(${cx}px,${cy}px)`;
+    const dx=cx-lastSparkX, dy=cy-lastSparkY, dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>4){
+      const steps=Math.min(2,Math.floor(dist/8));
+      for(let i=0;i<=steps;i++){
+        const t=steps===0?1:i/steps;
+        emit(lastSparkX+dx*t+(Math.random()-.5)*4, lastSparkY+dy*t+(Math.random()-.5)*4, {size:3+Math.random()*2,maxLife:25+Math.random()*15});
+      }
+      lastSparkX=cx;lastSparkY=cy;
+    }
+    for(const s of sparkPool){
+      if(!s.active) continue;
+      s.life++;s.x+=s.vx;s.y+=s.vy;s.vx*=.94;s.vy*=.94;
+      const t=s.life/s.maxLife;
+      s.el.style.opacity=Math.max(0,1-t)*.9;
+      const sc=Math.max(0,1-t*.7);
+      s.el.style.transform=`translate(${s.x}px,${s.y}px) scale(${sc})`;
+      if(s.life>=s.maxLife){s.active=false;s.el.style.opacity='0';}
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+  // Context states
+  let cls = '';
+  document.addEventListener('mouseover', e=>{
+    let m = '';
+    if(e.target.closest && e.target.closest('.code-block, code')) m = 'cur-code';
+    else if(e.target.closest && e.target.closest('a, button, .toc-card, .ch-nav-btn, label')) m = 'cur-link';
+    if(m !== cls){
+      if(cls) document.body.classList.remove(cls);
+      if(m) document.body.classList.add(m);
+      cls = m;
+    }
+  });
+})();
+
+/* =================== READING PROGRESS =================== */
+const progressFill = document.getElementById('progress-fill');
+function updateProgress(){
+  const h = document.documentElement;
+  const scrollPct = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+  progressFill.style.width = (scrollPct * 100) + '%';
+}
+document.addEventListener('scroll', updateProgress, {passive:true});
+updateProgress();
+
+/* =================== LUAU SYNTAX HIGHLIGHT =================== */
+(function(){
+  const KEYWORDS = ['local','function','end','if','then','elseif','else','for','do','while','return','break','continue','in','and','or','not','true','false','nil','repeat','until'];
+  const BUILTINS = ['print','require','game','script','workspace','Instance','Vector3','Color3','UDim2','TweenInfo','Enum','pcall','xpcall','typeof','type','tostring','tonumber','math','string','table','task','wait','spawn','delay','tick'];
+  function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);}
+
+  document.querySelectorAll('code[data-lang="lua"]').forEach(code=>{
+    let src = code.textContent;
+    // Tokenize: comments first, then strings, then keywords/numbers/etc.
+    // Use a placeholder approach
+    const tokens = [];
+    let html = '';
+    let i = 0;
+    while(i < src.length){
+      const ch = src[i];
+      // Comment --
+      if(ch === '-' && src[i+1] === '-'){
+        let end = src.indexOf('\n', i);
+        if(end === -1) end = src.length;
+        html += '<span class="c">' + escapeHtml(src.slice(i,end)) + '</span>';
+        i = end;
+        continue;
+      }
+      // String " or '
+      if(ch === '"' || ch === "'"){
+        const q = ch;
+        let end = i+1;
+        while(end < src.length && src[end] !== q){
+          if(src[end] === '\\') end++;
+          end++;
+        }
+        end = Math.min(end+1, src.length);
+        html += '<span class="s">' + escapeHtml(src.slice(i,end)) + '</span>';
+        i = end;
+        continue;
+      }
+      // Number
+      if(/[0-9]/.test(ch)){
+        let end = i;
+        while(end < src.length && /[0-9.]/.test(src[end])) end++;
+        html += '<span class="n">' + escapeHtml(src.slice(i,end)) + '</span>';
+        i = end;
+        continue;
+      }
+      // Identifier
+      if(/[a-zA-Z_]/.test(ch)){
+        let end = i;
+        while(end < src.length && /[a-zA-Z0-9_]/.test(src[end])) end++;
+        const word = src.slice(i,end);
+        if(KEYWORDS.includes(word)){
+          html += '<span class="k">' + word + '</span>';
+        } else if(BUILTINS.includes(word)){
+          html += '<span class="b">' + word + '</span>';
+        } else if(src[end] === '(' || src[end] === ':'){
+          html += '<span class="f">' + word + '</span>';
+        } else {
+          html += escapeHtml(word);
+        }
+        i = end;
+        continue;
+      }
+      // Operators
+      if('+-*/=<>!~.:%#'.includes(ch)){
+        let end = i;
+        while(end < src.length && '+-*/=<>!~.:%#'.includes(src[end])) end++;
+        html += '<span class="o">' + escapeHtml(src.slice(i,end)) + '</span>';
+        i = end;
+        continue;
+      }
+      html += escapeHtml(ch);
+      i++;
+    }
+    code.innerHTML = html;
+  });
+})();
+
+/* =================== CODE COPY BUTTONS =================== */
+document.querySelectorAll('.code-copy').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const code = btn.closest('.code-block').querySelector('code');
+    const text = code.textContent;
+    const after = ()=>{
+      const orig = btn.textContent;
+      btn.textContent = '✓ COPIADO';
+      btn.classList.add('copied');
+      setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('copied'); }, 1600);
+    };
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(after).catch(()=>{
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position='fixed'; ta.style.left='-9999px';
+        document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); after();}catch(e){}
+        document.body.removeChild(ta);
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.left='-9999px';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); after();}catch(e){}
+      document.body.removeChild(ta);
+    }
+  });
+});
+
+/* =================== CHECKLIST PERSISTENCE — none, kept simple =================== */
+</script>
+</body>
+</html>
